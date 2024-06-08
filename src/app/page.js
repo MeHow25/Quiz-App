@@ -1,53 +1,31 @@
 "use client";
 
-import {useEffect, useMemo, useRef, useState} from "react";
-import {shuffle} from "lodash";
-import {Button, Col, ListGroup, Row, Form} from "react-bootstrap";
-import {CurrentQuestion} from "@/app/current-question";
-import {fetchCategories, fetchData, fetchQuestions} from "@/app/api.service";
-import {Progress} from "@/app/progress";
-import {Timer} from "@/app/timer";
+import {useEffect, useState} from "react";
+import {Button, Col, Form, Spinner, Toast} from "react-bootstrap";
+import {fetchCategories, fetchQuestions} from "@/app/api.service";
 import {Summary} from "@/app/summary";
 import {DifficultyInput} from "@/app/difficulty-input";
 import {AnswerTypeInput} from "@/app/answer-type-input";
-import {select} from "underscore";
-
+import {Game} from "@/app/game";
+import {ErrorToast} from "@/app/error-toast";
+import Stopwatch from "@/app/stopwatch";
+import TimerB from "@/app/stopwatch";
+// todo
+// fetch loading
+// fetch errors handling
 export default function Page() {
-    const [response, setResponse] = useState(null);
+    const [questionsResponse, setQuestionsResponse] = useState(null);
+    const [noResults, setNoResults] = useState(null);
     const [gameStarted, setGameStarted] = useState(false);
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(null);
-    const [clicked, setClicked] = useState(false);
-    const [correct, setCorrect] = useState(null);
-    const [winGame, setWinGame] = useState(false);
-    const [summaryShow, setSummaryShow] = useState(false);
-    const [restartCount, setRestartCount] = useState(0);
-    const [toAdd, setToAdd] = useState(0);
-    const [timerMs, setTimerMs] = useState(0);
     const [categories, setCategories] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [selectedDifficulty, setSelectedDifficulty] = useState(null);
-    const [trueFalseMode, setTrueFalseMode] = useState(false);
-
-    if (response == null && selectedCategory != null && gameStarted) {
-        console.log("Trying to fetch questions, because: {}", {
-            response, selectedCategory, gameStarted
-        });
-        console.log("Trying to fetch questions with given params: {}", {
-            selectedCategory, selectedDifficulty, trueFalseMode
-        });
-        fetchQuestions(selectedCategory, selectedDifficulty, trueFalseMode).then((result) => {
-            console.log("Questions fetched successfully: {}", result);
-            if (result && result.response_code != 5) {
-                setResponse(result);
-                console.log("Response set as: {}", result);
-            }
-        });
-    }
+    const [trueFalseMode, setTrueFalseMode] = useState("disabled");
+    const [isFetchingQuestions, setIsFetchingQuestions] = useState(false);
 
     useEffect(() => {
         fetchCategories().then((result) => {
             setCategories(result);
-            console.log("Categories set: {}", result);
         });
     }, []);
 
@@ -55,60 +33,28 @@ export default function Page() {
         setSelectedDifficulty(level);
     }
 
-    function setMode(mode) {
-        setTrueFalseMode(mode);
-    }
-
-    function handleCorrectAnswer() {
-        setClicked(true);
-        setCorrect(true);
-
-        if (currentQuestionIndex === 9) {
-            setWinGame(true);
-            setToAdd(0);
-        }
-    }
-
-    function handleIncorrectAnswer() {
-        setClicked(true);
-        setCorrect(false);
-        setToAdd(0);
-    }
-
     function startGame() {
-        setWinGame(false);
-        setClicked(false);
-        setCorrect(null);
-        setGameStarted(true);
-        setCurrentQuestionIndex(0);
-        setToAdd(1);
+        setIsFetchingQuestions(true);
+        fetchQuestions(selectedCategory, selectedDifficulty, trueFalseMode).then((result) => {
+            setIsFetchingQuestions(false);
+            if (result == null || result === "noResults") {
+                setNoResults(true);
+            } else {
+                setNoResults(false);
+                setGameStarted(true);
+                setQuestionsResponse(result);
+            }
+        });
     }
 
-    function startAgain() {
-        setRestartCount(restartCount + 1);
-        startGame();
-    }
-
-    function goToNextQuestion() {
-        setClicked(false);
-        setCorrect(null);
-
-        if (currentQuestionIndex < 9) {
-            setCurrentQuestionIndex(currentQuestionIndex + 1);
-        }
-    }
-
-    function showSummaryModal() {
-        setSummaryShow(true);
-    }
-
-    function onTimerStop(ms) {
-        setTimerMs(ms);
+    function exitGame() {
+        setGameStarted(false);
+        setQuestionsResponse(null);
     }
 
     return (
         <div>
-            {!gameStarted && (
+            {!questionsResponse?.results && (
                 <Col md={{span: 4, offset: 4}}>
                     <h1 style={{marginTop: "15vh"}}>Quiz Game</h1>
                     <Form.Label className="mt-3">Category</Form.Label>
@@ -120,52 +66,34 @@ export default function Page() {
                     </Form.Select>
                     <Form.Label className="mt-3">Difficulty</Form.Label>
                     <Col>
-                        <DifficultyInput setDifficulty={setDifficulty} />
+                        <DifficultyInput setDifficulty={setDifficulty}/>
                     </Col>
                     <Form.Label className="mt-3">True/False answers mode</Form.Label>
                     <Col>
-                        <AnswerTypeInput setMode={setMode} />
+                        <AnswerTypeInput setMode={setTrueFalseMode} mode={trueFalseMode}/>
                     </Col>
-                    <Button
-                        onClick={startGame}
-                        variant="primary"
-                        size="lg"
-                        className="mt-3"
-                    >
-                        Start Quiz
-                    </Button>
+                    {isFetchingQuestions && (
+                        <Spinner className="mt-4" animation="border" variant="primary" />
+                    )}
+                    {!isFetchingQuestions && (
+                        <Button
+                            onClick={startGame}
+                            variant="primary"
+                            size="lg"
+                            className="mt-3"
+                        >
+                            Start Quiz
+                        </Button>
+                    )}
+                    <ErrorToast className="d-inline-block m-1" onClose={() => setNoResults(false)} show={noResults}></ErrorToast>
                 </Col>
             )}
-            {gameStarted && response?.results != null && (
-                <>
-                    <Row style={{marginTop: "15vh"}}>
-                        <Col>
-                            <h1>Quiz Game</h1>
-                        </Col>
-                        <Col>
-                            <Timer onTimerStop={onTimerStop} restartCount={restartCount} toAdd={toAdd}/>
-                        </Col>
-                    </Row>
-                    <Progress currentQuestionIndex={currentQuestionIndex}/>
-                    <CurrentQuestion
-                        goToNextQuestion={goToNextQuestion}
-                        currentQuestion={response.results[currentQuestionIndex]}
-                        currentQuestionIndex={currentQuestionIndex}
-                        clicked={clicked}
-                        correct={correct}
-                        handleCorrectAnswer={handleCorrectAnswer}
-                        handleIncorrectAnswer={handleIncorrectAnswer}
-                        startGame={startAgain}
-                        winGame={winGame}
-                        showSummaryModal={showSummaryModal}
-                    />
-                </>
+            {gameStarted && questionsResponse?.results != null && (
+                <Game questionsResponse={questionsResponse}
+                      startGame={startGame}
+                      exitGame={exitGame}
+                />
             )}
-            <Summary
-                show={summaryShow}
-                onHide={() => setSummaryShow(false)}
-                timerMs={timerMs}
-            />
         </div>
     );
 }

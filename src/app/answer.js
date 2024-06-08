@@ -1,4 +1,5 @@
 import { Button } from "react-bootstrap";
+import {decodeHTML} from "@/app/utils";
 
 export function Answer({
   answer,
@@ -20,7 +21,7 @@ export function Answer({
         variant={clicked ? backgroundColorIfClicked : "light"}
         active={clicked}
       >
-        {answer.value}
+        {decodeHTML(answer.value)}
       </Button>
     </li>
   );
