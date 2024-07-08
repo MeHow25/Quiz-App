@@ -20,17 +20,6 @@ export async function fetchQuestions(categoryId, difficulty, mode) {
     if (noResultsResponseCodes.includes(result?.["response_code"])) {
       return "noResults";
     }
-    //                setIsFetchingQuestions(false);
-    //                 if (result == null) {
-    //                     setNoResults(true);
-    //                 } else if (result.response_code == 1) {
-    //                     setNoResults(true);
-    //                 } else if (result.response_code == 5) {
-    //                     setNoResults(true);
-    //                 } else {
-    //                     setGameStarted(true);
-    //                     setQuestionsResponse(result);
-    //                 }
     result?.results?.forEach((question) => {
       let answers = [];
       answers.push(...question.incorrect_answers);
@@ -43,8 +32,6 @@ export async function fetchQuestions(categoryId, difficulty, mode) {
         };
       });
     });
-    console.log("api", result)
-    // await sleep(5000);
     return result;
   } catch (error) {
     console.error("Error fetching data: ", error);
@@ -61,4 +48,3 @@ export async function fetchCategories() {
     console.error("Error fetching data: ", error);
   }
 }
-const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))

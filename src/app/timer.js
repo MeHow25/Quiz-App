@@ -9,18 +9,17 @@ export function Timer({ toAdd, restartCount, onTimerStop }) {
     if (timerRestartCount) {
       setMilliseconds(0);
     }
-  }, [timerRestartCount])
+  }, [timerRestartCount]);
 
   useEffect(() => {
     if (toAdd === 0) {
       onTimerStop(milliseconds);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toAdd, onTimerStop]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-        setMilliseconds((ms) => ms + toAdd);
+      setMilliseconds((ms) => ms + toAdd);
     }, 10);
     return () => clearInterval(interval);
   }, [toAdd, milliseconds]);
