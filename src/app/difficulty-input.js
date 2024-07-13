@@ -11,21 +11,21 @@ export function DifficultyInput({ setDifficulty }) {
   return (
     <ButtonGroup aria-label="Basic example" suppressHydrationWarning>
       <Button
-        data-testid={"difficulty-mode-easy"}
+        data-testid="difficulty-mode-easy"
         variant={selectedDifficulty === "easy" ? "success" : "secondary"}
         onClick={() => setSelectedDifficulty("easy")}
       >
         Easy
       </Button>
       <Button
-        data-testid={"difficulty-mode-medium"}
+        data-testid="difficulty-mode-medium"
         variant={selectedDifficulty === "medium" ? "primary" : "secondary"}
         onClick={() => setSelectedDifficulty("medium")}
       >
         Medium
       </Button>
       <Button
-        data-testid={"difficulty-mode-hard"}
+        data-testid="difficulty-mode-hard"
         variant={selectedDifficulty === "hard" ? "danger" : "secondary"}
         onClick={() => setSelectedDifficulty("hard")}
       >

@@ -10,8 +10,8 @@ export const store = configureStore({
     game: gameReducer,
   },
 });
-export const setupStore = (preloadedState) => {
-  return configureStore({
+export const setupStore = (preloadedState) =>
+  configureStore({
     reducer: {
       categories: categoriesReducer,
       questions: questionsReducer,
@@ -19,4 +19,3 @@ export const setupStore = (preloadedState) => {
     },
     preloadedState,
   });
-};

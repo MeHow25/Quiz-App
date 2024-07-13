@@ -78,8 +78,6 @@ export const {
 
 export const selectGame = (state) => state.game;
 export const selectFinishedAt = (state) => state.game.finishedAt;
-export const selectStartedAt = (state) => {
-  return state.game.startedAt;
-};
+export const selectStartedAt = (state) => state.game.startedAt;
 
 export default gameSlice.reducer;

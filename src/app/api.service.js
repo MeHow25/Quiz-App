@@ -11,13 +11,13 @@ export async function fetchQuestions(categoryId, difficulty, mode) {
     url = url + "&difficulty=" + difficulty;
   }
   if (mode === "enabled") {
-    url = url + "&type=boolean";
+    url += "&type=boolean";
   }
 
   try {
     const response = await fetch(url);
     const result = await response.json();
-    if (noResultsResponseCodes.includes(result?.["response_code"])) {
+    if (noResultsResponseCodes.includes(result?.response_code)) {
       return "noResults";
     }
     result?.results?.forEach((question) => {
@@ -25,12 +25,10 @@ export async function fetchQuestions(categoryId, difficulty, mode) {
       answers.push(...question.incorrect_answers);
       answers.push(question.correct_answer);
       answers = shuffle(answers);
-      question.all_answers = answers.map((answer) => {
-        return {
-          value: answer,
-          is_correct: answer === question.correct_answer,
-        };
-      });
+      question.all_answers = answers.map((answer) => ({
+        value: answer,
+        is_correct: answer === question.correct_answer,
+      }));
     });
     return result;
   } catch (error) {

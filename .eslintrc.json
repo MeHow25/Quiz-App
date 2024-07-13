@@ -1,3 +1,25 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": ["next", "airbnb", "prettier", "eslint:recommended"],
+  "plugins": ["react", "react-hooks", "prettier"],
+  "env": {
+    "browser": true,
+    "jest": true
+  },
+  "rules": {
+    "react/prop-types": "off",
+    "import/no-unresolved": "off",
+    "import/prefer-default-export": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": "off",
+    "prefer-template": "off",
+    "no-param-reassign": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-no-bind": "off",
+    "no-plusplus": "off",
+    "no-use-before-define": "off",
+    "react/destructuring-assignment": "off",
+    "consistent-return": "off",
+    "no-console": "off",
+    "no-return-await": "off"
+  }
 }

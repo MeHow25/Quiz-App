@@ -8,9 +8,9 @@ export function Stopwatch({ stopStopwatch }) {
   const [timerInterval, setTimerInterval] = useState([]);
   const [startTimer, setStartTimer] = useState(true);
 
-  useEffect(function () {
+  useEffect(() => {
     if (startTimer) {
-      const id = setInterval(function () {
+      const id = setInterval(() => {
         setNow(Date.now());
       }, 100);
       setTimerInterval((prev) => {
@@ -21,6 +21,7 @@ export function Stopwatch({ stopStopwatch }) {
         clearInterval(id);
       };
     }
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -29,6 +30,7 @@ export function Stopwatch({ stopStopwatch }) {
     } else {
       setStartTimer(true);
     }
+    // eslint-disable-next-line
   }, [stopStopwatch]);
 
   function pauseTimer() {

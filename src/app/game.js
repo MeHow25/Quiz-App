@@ -1,11 +1,10 @@
 import { Button, Col, Row } from "react-bootstrap";
-import { Progress } from "@/app/progress";
-import { CurrentQuestion } from "@/app/current-question";
-import * as PropTypes from "prop-types";
-import { useState } from "react";
-import { Summary } from "@/app/summary";
-import { Stopwatch } from "@/app/stopwatch";
-import { selectQuestions } from "@/app/questions-slice";
+import { useDispatch, useSelector } from "react-redux";
+import { Progress } from "./progress";
+import { CurrentQuestion } from "./current-question";
+import { Summary } from "./summary";
+import { Stopwatch } from "./stopwatch";
+import { selectQuestions } from "./questions-slice";
 import {
   correctAnswer,
   goNextQuestion,
@@ -16,18 +15,14 @@ import {
   startAgain,
   showTimer,
   hideSummary,
-} from "@/app/game-slice";
-import { useDispatch, useSelector } from "react-redux";
+} from "./game-slice";
 
 export function Game({ exitGame }) {
   const questions = useSelector(selectQuestions).value;
   const game = useSelector(selectGame);
   const dispatch = useDispatch();
 
-  const [timerMs, setTimerMs] = useState(0);
-  const now = new Date().getTime();
-
-  let currentQuestion = questions[game.currentQuestionIndex];
+  const currentQuestion = questions[game.currentQuestionIndex];
 
   function startGame() {
     dispatch(start());
@@ -57,7 +52,7 @@ export function Game({ exitGame }) {
 
   return (
     <>
-      <Row style={{ marginTop: "15vh" }} data-testid={"game-container"}>
+      <Row style={{ marginTop: "15vh" }} data-testid="game-container">
         <Col>
           <h1>Quiz Game</h1>
         </Col>
@@ -65,7 +60,7 @@ export function Game({ exitGame }) {
           <Button
             variant="danger"
             onClick={exitGame}
-            data-testid={"exit-game-button"}
+            data-testid="exit-game-button"
           >
             Exit Game
           </Button>
@@ -117,15 +112,10 @@ export function Game({ exitGame }) {
         </ul>
       </div>
       <Summary
-        data-testid={"summary"}
+        data-testid="summary"
         show={game.summaryShow}
         onHide={() => dispatch(hideSummary())}
       />
     </>
   );
 }
-
-Game.propTypes = {
-  questionsResponse: PropTypes.any,
-  exitGame: PropTypes.func,
-};

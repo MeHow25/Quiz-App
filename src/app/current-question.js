@@ -1,5 +1,5 @@
-import { Answer } from "@/app/answer";
-import {decodeHTML} from "@/app/utils";
+import { Answer } from "./answer";
+import { decodeHTML } from "./utils";
 
 export function CurrentQuestion({
   currentQuestion,
@@ -9,18 +9,18 @@ export function CurrentQuestion({
 }) {
   return (
     <>
-        <li className="list-group-item">
-          <h2>{decodeHTML(currentQuestion["question"])}</h2>
-        </li>
-        {currentQuestion.all_answers.map((answer) => (
-          <Answer
-            key={answer.value}
-            answer={answer}
-            clicked={clicked}
-            handleCorrectAnswer={handleCorrectAnswer}
-            handleIncorrectAnswer={handleIncorrectAnswer}
-          />
-        ))}
+      <li className="list-group-item">
+        <h2>{decodeHTML(currentQuestion.question)}</h2>
+      </li>
+      {currentQuestion.all_answers.map((answer) => (
+        <Answer
+          key={answer.value}
+          answer={answer}
+          clicked={clicked}
+          handleCorrectAnswer={handleCorrectAnswer}
+          handleIncorrectAnswer={handleIncorrectAnswer}
+        />
+      ))}
     </>
   );
 }

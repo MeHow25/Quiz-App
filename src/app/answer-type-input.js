@@ -4,7 +4,7 @@ export function AnswerTypeInput({ setMode, mode }) {
   return (
     <ButtonGroup aria-label="Basic example" suppressHydrationWarning>
       <Button
-        data-testid={"true-false-disabled"}
+        data-testid="true-false-disabled"
         suppressHydrationWarning
         variant={mode === "disabled" ? "primary" : "secondary"}
         onClick={() => setMode("disabled")}
@@ -12,7 +12,7 @@ export function AnswerTypeInput({ setMode, mode }) {
         Disabled
       </Button>
       <Button
-        data-testid={"true-false-enabled"}
+        data-testid="true-false-enabled"
         suppressHydrationWarning
         variant={mode === "enabled" ? "primary" : "secondary"}
         onClick={() => setMode("enabled")}

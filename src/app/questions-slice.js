@@ -9,9 +9,8 @@ const initialState = {
 
 export const fetchQuestionsAsync = createAsyncThunk(
   "questions/fetchQuestions",
-  async ({ categoryId, difficulty, trueFalse }) => {
-    return (await fetchQuestions(categoryId, difficulty, trueFalse))?.results;
-  },
+  async ({ categoryId, difficulty, trueFalse }) =>
+    (await fetchQuestions(categoryId, difficulty, trueFalse))?.results,
 );
 
 export const questionsSlice = createSlice({

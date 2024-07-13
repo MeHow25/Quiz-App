@@ -1,17 +1,16 @@
 import "@testing-library/jest-dom";
 import React from "react";
-import Page from "@/app/page";
-import { renderWithProviders } from "@/app/test-utils";
-import { findByTestId, fireEvent, getByText } from "@testing-library/react";
-import * as preview from "jest-preview";
-import { mockedQuestions } from "@/app/__mocks__/mocked-questions";
+import { fireEvent } from "@testing-library/react";
+import Page from "./page";
+import { renderWithProviders } from "./test-utils";
+import { mockedQuestions } from "./__mocks__/mocked-questions";
 
 let result;
 jest.mock("./api.service", () => ({
   fetchCategories: jest
     .fn()
     .mockImplementation(async () => [{ id: 123, name: "test" }]),
-  fetchQuestions: jest.fn().mockImplementation(async (a, b, c) => result),
+  fetchQuestions: jest.fn().mockImplementation(async () => result),
 }));
 
 describe("Page", () => {
@@ -31,12 +30,12 @@ describe("Page", () => {
 
     for (let i = 1; i < 10; i++) {
       expect(
-        await wrapper.findByText("Test question number " + i),
+        wrapper.getByText(`Test question number ${i}`),
       ).toBeInTheDocument();
-      fireEvent.click(await wrapper.findByText("answer d"));
-      fireEvent.click(await wrapper.findByText("Next question"));
+      fireEvent.click(wrapper.getByText("answer d"));
+      fireEvent.click(wrapper.getByText("Next question"));
       expect(
-        await wrapper.findByText("Test question number " + (i + 1)),
+        wrapper.getByText(`Test question number ${i + 1}`),
       ).toBeInTheDocument();
     }
 

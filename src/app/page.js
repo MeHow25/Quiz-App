@@ -1,19 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button, Col, Form, Spinner, Toast } from "react-bootstrap";
-import { DifficultyInput } from "@/app/difficulty-input";
-import { AnswerTypeInput } from "@/app/answer-type-input";
-import { Game } from "@/app/game";
-import { ErrorToast } from "@/app/error-toast";
+import { Button, Col, Form, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAsync, selectCategories } from "@/app/categories-slice";
+import { DifficultyInput } from "./difficulty-input";
+import { AnswerTypeInput } from "./answer-type-input";
+import { Game } from "./game";
+import { ErrorToast } from "./error-toast";
+import { fetchAsync, selectCategories } from "./categories-slice";
 import {
   fetchQuestionsAsync,
   selectQuestions,
   resetQuestions,
-} from "@/app/questions-slice";
-import { start } from "@/app/game-slice";
+} from "./questions-slice";
+import { start } from "./game-slice";
 
 export default function Page() {
   const categories = useSelector(selectCategories);
@@ -28,6 +28,7 @@ export default function Page() {
 
   useEffect(() => {
     dispatch(fetchAsync());
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -60,24 +61,21 @@ export default function Page() {
           <h1 style={{ marginTop: "15vh" }}>Quiz Game</h1>
           <Form.Label className="mt-3">Category</Form.Label>
           <Form.Select
-            data-testid={"category-select"}
+            data-testid="category-select"
             onChange={(event) => {
               setSelectedCategory(event.target.value);
             }}
           >
             <option value="">Any category</option>
-            {categories != null &&
-              categories.map((category) => {
-                return (
-                  <option
-                    key={category.id}
-                    value={category.id}
-                    data-testid={"category-option-" + category.id}
-                  >
-                    {category.name}
-                  </option>
-                );
-              })}
+            {categories.map((category) => (
+              <option
+                key={category.id}
+                value={category.id}
+                data-testid={"category-option-" + category.id}
+              >
+                {category.name}
+              </option>
+            ))}
           </Form.Select>
           <Form.Label className="mt-3">Difficulty</Form.Label>
           <Col>
@@ -89,7 +87,7 @@ export default function Page() {
           </Col>
           {questions.status === "loading" && (
             <Spinner
-              data-testid={"spinner"}
+              data-testid="spinner"
               className="mt-4"
               animation="border"
               variant="primary"
@@ -101,21 +99,21 @@ export default function Page() {
               variant="primary"
               size="lg"
               className="mt-3"
-              data-testid={"start-button"}
+              data-testid="start-button"
             >
               Start Quiz
             </Button>
           )}
           <ErrorToast
-            data-testid={"error-toast"}
+            data-testid="error-toast"
             className="d-inline-block m-1"
             onClose={() => setShowNoResultsToast(false)}
             show={showNoResultsToast}
-          ></ErrorToast>
+          />
         </Col>
       )}
       {gameStarted && (
-        <Game data-testid={"game"} startGame={startGame} exitGame={exitGame} />
+        <Game data-testid="game" startGame={startGame} exitGame={exitGame} />
       )}
     </div>
   );

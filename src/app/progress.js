@@ -1,7 +1,7 @@
 import { ProgressBar } from "react-bootstrap";
 
 export function Progress({ currentQuestionIndex }) {
-  let currentQuestionNumber = currentQuestionIndex + 1;
+  const currentQuestionNumber = currentQuestionIndex + 1;
 
   return (
     <ProgressBar

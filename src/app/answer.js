@@ -1,5 +1,5 @@
 import { Button } from "react-bootstrap";
-import {decodeHTML} from "@/app/utils";
+import { decodeHTML } from "./utils";
 
 export function Answer({
   answer,

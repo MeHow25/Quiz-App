@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import { AnswerTypeInput } from "@/app/answer-type-input";
 import userEvent from "@testing-library/user-event";
+import { AnswerTypeInput } from "./answer-type-input";
 
 describe("Answer type input", () => {
   it("renders correctly", () => {
