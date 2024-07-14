@@ -90,6 +90,7 @@ describe("Page", () => {
     fireEvent.click(await wrapper.findByTestId("exit-game-button"));
     expect(await wrapper.queryByTestId("game")).not.toBeInTheDocument();
   });
+
   it("should show error while fetching questions", async () => {
     result = null;
     const mockedStore = {};
@@ -107,5 +108,26 @@ describe("Page", () => {
     expect(
       await wrapper.queryByTestId("game-container"),
     ).not.toBeInTheDocument();
+  });
+
+  it("should not show next question button", async () => {
+    result = { results: mockedQuestions };
+    const mockedStore = {};
+    const wrapper = renderWithProviders(<Page />, {
+      initialState: mockedStore,
+    });
+    fireEvent.change(await wrapper.findByTestId("category-select"), {
+      target: { value: 123 },
+    });
+
+    fireEvent.click(wrapper.getByTestId("difficulty-mode-easy"));
+    fireEvent.click(wrapper.getByTestId("true-false-disabled"));
+    fireEvent.click(wrapper.getByTestId("start-button"));
+    expect(await wrapper.findByTestId("game-container")).toBeInTheDocument();
+    expect(wrapper.queryByText("Next question")).not.toBeInTheDocument();
+    fireEvent.click(wrapper.getByText("answer d"));
+    fireEvent.click(wrapper.getByText("Next question"));
+    expect(wrapper.getByText("Test question number 2")).toBeInTheDocument();
+    expect(wrapper.queryByText("Next question")).not.toBeInTheDocument();
   });
 });

@@ -58,6 +58,7 @@ export const gameSlice = createSlice({
     goNextQuestion: (state) => {
       state.answerClicked = false;
       state.correctAnswer = null;
+      state.correctAnswerClicked = false;
 
       if (state.currentQuestionIndex < 9) {
         state.currentQuestionIndex++;
