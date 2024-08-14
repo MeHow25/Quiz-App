@@ -7,8 +7,8 @@ A quiz application allowing users to select quiz categories, difficulty levels, 
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/MeHow25/quiz-app.git
-   cd quiz-app
+   git clone https://github.com/MeHow25/Quiz-App.git
+   cd Quiz-App
    ```
 
 2. Install dependencies:
