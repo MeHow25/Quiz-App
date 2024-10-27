@@ -2,7 +2,10 @@
 
 A quiz application allowing users to select quiz categories, difficulty levels, and answer types. Users can answer questions, see their progress, and view a summary of their performance at the end of the quiz.
 
-## How to run
+## Live Demo
+https://mehow25.github.io/
+
+## How to run locally
 
 
 1. Clone the repository:
