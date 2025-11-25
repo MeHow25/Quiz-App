@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import React from "react";
 import { fireEvent } from "@testing-library/react";
-import Page from "./page";
+import Main from "./main";
 import { renderWithProviders } from "./test-utils";
 import { mockedQuestions } from "./__mocks__/mocked-questions";
 
@@ -17,7 +17,7 @@ describe("Page", () => {
   it("renders correctly", async () => {
     result = { results: mockedQuestions };
     const mockedStore = {};
-    const wrapper = renderWithProviders(<Page />, {
+    const wrapper = renderWithProviders(<Main />, {
       initialState: mockedStore,
     });
     fireEvent.change(await wrapper.findByTestId("category-select"), {
@@ -45,7 +45,7 @@ describe("Page", () => {
 
   it("handle incorrect answer and Play Again button correctly", async () => {
     const mockedStore = {};
-    const wrapper = renderWithProviders(<Page />, {
+    const wrapper = renderWithProviders(<Main />, {
       initialState: mockedStore,
     });
     fireEvent.change(await wrapper.findByTestId("category-select"), {
@@ -72,7 +72,7 @@ describe("Page", () => {
 
   it("handles Exit Game button correctly", async () => {
     const mockedStore = {};
-    const wrapper = renderWithProviders(<Page />, {
+    const wrapper = renderWithProviders(<Main />, {
       initialState: mockedStore,
     });
     fireEvent.change(await wrapper.findByTestId("category-select"), {
@@ -94,7 +94,7 @@ describe("Page", () => {
   it("should show error while fetching questions", async () => {
     result = null;
     const mockedStore = {};
-    const wrapper = renderWithProviders(<Page />, {
+    const wrapper = renderWithProviders(<Main />, {
       initialState: mockedStore,
     });
     fireEvent.change(await wrapper.findByTestId("category-select"), {
@@ -113,7 +113,7 @@ describe("Page", () => {
   it("should not show next question button", async () => {
     result = { results: mockedQuestions };
     const mockedStore = {};
-    const wrapper = renderWithProviders(<Page />, {
+    const wrapper = renderWithProviders(<Main />, {
       initialState: mockedStore,
     });
     fireEvent.change(await wrapper.findByTestId("category-select"), {
