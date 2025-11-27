@@ -1,5 +1,5 @@
-import Main from "@/app/main";
-import UserButton from "@/app/user-button";
+import Main from "./main";
+import UserButton from "./user-button";
 
 export default function Page() {
   return (
