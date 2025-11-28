@@ -1,18 +1,18 @@
+'use client';
+
 import { SessionProvider } from "next-auth/react";
 import { Provider as ReduxProvider } from "react-redux";
-import { store } from "./store";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./globals.css";
+import { store } from "@/lib/redux/store";
 import { Container, Row, Col } from "react-bootstrap";
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+export function Providers({ children }) {
   return (
-    <SessionProvider session={session}>
+    <SessionProvider>
       <ReduxProvider store={store}>
         <Container>
           <Row>
             <Col style={{ textAlign: "center" }}>
-              <Component {...pageProps} />
+              {children}
             </Col>
           </Row>
         </Container>
@@ -20,5 +20,3 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
     </SessionProvider>
   );
 }
-
-export default MyApp;

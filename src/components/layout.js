@@ -5,7 +5,7 @@ import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Col, Container, Row } from "react-bootstrap";
 import { Provider } from "react-redux";
-import { store } from "./store";
+import { store } from "@/lib/redux/store";
 
 const inter = Inter({ subsets: ["latin"] });
 

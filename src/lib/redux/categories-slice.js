@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchCategories } from "./api.service";
+import { fetchCategories } from "@/lib/services/api.service";
 
 const initialState = {
   value: null,

@@ -4,7 +4,7 @@ import { Progress } from "./progress";
 import { CurrentQuestion } from "./current-question";
 import { Summary } from "./summary";
 import { Stopwatch } from "./stopwatch";
-import { selectQuestions } from "./questions-slice";
+import { selectQuestions } from "../lib/redux/questions-slice";
 import {
   correctAnswer,
   goNextQuestion,
@@ -15,7 +15,7 @@ import {
   startAgain,
   showTimer,
   hideSummary,
-} from "./game-slice";
+} from "../lib/redux/game-slice";
 
 export function Game({ exitGame }) {
   const questions = useSelector(selectQuestions).value;

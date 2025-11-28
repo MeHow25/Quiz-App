@@ -1,9 +1,9 @@
 import "@testing-library/jest-dom";
 import React from "react";
 import { fireEvent } from "@testing-library/react";
+import { renderWithProviders } from "@/lib/test/test-utils";
 import Main from "./main";
-import { renderWithProviders } from "./test-utils";
-import { mockedQuestions } from "./__mocks__/mocked-questions";
+import { mockedQuestions } from "../../__mocks__/mocked-questions";
 
 let result;
 jest.mock("./api.service", () => ({

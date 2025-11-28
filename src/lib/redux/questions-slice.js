@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchQuestions } from "./api.service";
+import { fetchQuestions } from "@/lib/services/api.service";
 
 const initialState = {
   value: null,

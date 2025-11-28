@@ -1,5 +1,5 @@
 import { Answer } from "./answer";
-import { decodeHTML } from "./utils";
+import { decodeHTML } from "../lib/utils";
 
 export function CurrentQuestion({
   currentQuestion,

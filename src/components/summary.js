@@ -9,7 +9,7 @@ import {
   XIcon,
 } from "react-share";
 import { useSelector } from "react-redux";
-import { selectFinishedAt, selectStartedAt } from "./game-slice";
+import { selectFinishedAt, selectStartedAt } from "@/lib/redux/game-slice";
 
 export function Summary(props) {
   const finishedAt = useSelector(selectFinishedAt);

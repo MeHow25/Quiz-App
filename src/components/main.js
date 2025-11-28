@@ -7,13 +7,13 @@ import { DifficultyInput } from "./difficulty-input";
 import { AnswerTypeInput } from "./answer-type-input";
 import { Game } from "./game";
 import { ErrorToast } from "./error-toast";
-import { fetchAsync, selectCategories } from "./categories-slice";
+import { fetchAsync, selectCategories } from "../lib/redux/categories-slice";
 import {
   fetchQuestionsAsync,
   selectQuestions,
   resetQuestions,
-} from "./questions-slice";
-import { start } from "./game-slice";
+} from "../lib/redux/questions-slice";
+import { start } from "../lib/redux/game-slice";
 
 export default function Main() {
   const categories = useSelector(selectCategories);
