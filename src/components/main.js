@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button, Col, Form, Spinner } from "react-bootstrap";
+import { Button, Col, Form, Spinner, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { DifficultyInput } from "./difficulty-input";
 import { AnswerTypeInput } from "./answer-type-input";
 import { Game } from "./game";
 import { ErrorToast } from "./error-toast";
+import Leaderboard from "./leaderboard";
 import { fetchAsync, selectCategories } from "../lib/redux/categories-slice";
 import {
   fetchQuestionsAsync,
@@ -115,6 +116,9 @@ export default function Main() {
       {gameStarted && (
         <Game data-testid="game" startGame={startGame} exitGame={exitGame} />
       )}
+      <Container className="mt-5">
+        <Leaderboard />
+      </Container>
     </div>
   );
 }

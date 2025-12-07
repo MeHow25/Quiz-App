@@ -30,9 +30,7 @@ export default function UserButton() {
                 <p className="text-sm font-medium leading-none">
                   {session.user.name}
                 </p>
-                <p className="text-xs text-muted">
-                  {session.user.email}
-                </p>
+                <p className="text-xs text-muted">{session.user.email}</p>
               </div>
             </Dropdown.Header>
             <Dropdown.Divider />

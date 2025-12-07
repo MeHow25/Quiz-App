@@ -1,5 +1,6 @@
 import { Button, Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
 import { Progress } from "./progress";
 import { CurrentQuestion } from "./current-question";
 import { Summary } from "./summary";
@@ -10,11 +11,11 @@ import {
   goNextQuestion,
   incorrectAnswer,
   selectGame,
-  showSummary,
   start,
   startAgain,
   showTimer,
   hideSummary,
+  saveRecord,
 } from "../lib/redux/game-slice";
 
 export function Game({ exitGame }) {
