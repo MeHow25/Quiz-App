@@ -11,6 +11,7 @@ const initialState = {
   summaryShow: false,
   startedAt: 0,
   finishedAt: 0,
+  recordSaved: false,
 };
 
 export const gameSlice = createSlice({
@@ -51,6 +52,7 @@ export const gameSlice = createSlice({
     },
     showSummary: (state) => {
       state.summaryShow = true;
+      state.recordSaved = true;
     },
     hideSummary: (state) => {
       state.summaryShow = false;

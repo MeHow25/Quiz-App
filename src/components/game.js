@@ -22,6 +22,11 @@ export function Game({ exitGame }) {
   const questions = useSelector(selectQuestions).value;
   const game = useSelector(selectGame);
   const dispatch = useDispatch();
+  useEffect(() => {
+    if (game.winGame && !game.recordSaved) {
+      dispatch(saveRecord());
+    }
+  }, [game.winGame, game.recordSaved]);
 
   const currentQuestion = questions[game.currentQuestionIndex];
 
