@@ -1,12 +1,14 @@
 import { Button, ButtonGroup } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function DifficultyInput({ setDifficulty }) {
   const [selectedDifficulty, setSelectedDifficulty] = useState(null);
 
-  if (selectedDifficulty) {
-    setDifficulty(selectedDifficulty);
-  }
+  useEffect(() => {
+    if (selectedDifficulty) {
+      setDifficulty(selectedDifficulty);
+    }
+  }, [selectedDifficulty, setDifficulty]);
 
   return (
     <ButtonGroup aria-label="Basic example" suppressHydrationWarning>

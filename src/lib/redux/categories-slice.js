@@ -1,7 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getApiService } from "@/lib/services/main";
-
-const apiService = getApiService();
+import apiServiceProvider from "@/lib/services/main.ts";
 
 const initialState = {
   value: null,
@@ -10,7 +8,7 @@ const initialState = {
 
 export const fetchAsync = createAsyncThunk(
   "categories/fetchCategories",
-  async () => await apiService.fetchCategories(),
+  async () => await apiServiceProvider.getApiService().fetchCategories(),
 );
 
 export const categoriesSlice = createSlice({

@@ -53,7 +53,6 @@ export class ApiService implements IApiService {
     try {
       const response = await fetch("https://opentdb.com/api_category.php");
       const result = await response.json();
-      console.log(result.trivia_categories);
       return result.trivia_categories;
     } catch (error) {
       console.error("Error fetching data: ", error);

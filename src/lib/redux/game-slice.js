@@ -1,17 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
+import leaderboardService from "@/lib/services/leaderboard.service";
 
 const initialState = {
   currentQuestionIndex: 0,
-  winGame: false,
+  wonGame: false,
   answerClicked: false,
-  correctAnswerClicked: null,
   stopStopwatch: false,
-  renderTimer: true,
+  showTimer: true,
+  // todo display it
   restartCount: 0,
-  summaryShow: false,
+  showSummary: false,
   startedAt: 0,
   finishedAt: 0,
   recordSaved: false,
+  showNextQuestionButton: false,
+  showPlayAgainButton: false,
+};
+
+const LAST_QUESTION_INDEX = 9;
+
+const resetGameState = (state) => {
+  state.answerClicked = false;
+  state.stopStopwatch = false;
 };
 
 export const gameSlice = createSlice({
@@ -19,50 +29,52 @@ export const gameSlice = createSlice({
   initialState,
   reducers: {
     start: (state) => {
-      state.winGame = false;
-      state.answerClicked = false;
-      state.correctAnswerClicked = null;
+      state.wonGame = false;
       state.currentQuestionIndex = 0;
-      state.stopStopwatch = false;
       state.startedAt = new Date().getTime();
+      resetGameState(state);
     },
     startAgain: (state) => {
-      state.renderTimer = false;
+      state.showTimer = false;
       state.restartCount++;
       state.startedAt = new Date().getTime();
+      state.showPlayAgainButton = false;
+      resetGameState(state);
     },
     showTimer: (state) => {
-      state.renderTimer = true;
+      state.showTimer = true;
     },
     correctAnswer: (state) => {
       state.answerClicked = true;
-      state.correctAnswerClicked = true;
 
-      if (state.currentQuestionIndex === 9) {
-        state.winGame = true;
-        state.summaryShow = true;
+      if (state.currentQuestionIndex === LAST_QUESTION_INDEX) {
+        state.wonGame = true;
+        state.showSummary = true;
         state.stopStopwatch = true;
         state.finishedAt = new Date().getTime();
       }
+
+      state.showNextQuestionButton =
+        state.currentQuestionIndex < LAST_QUESTION_INDEX;
     },
     incorrectAnswer: (state) => {
       state.answerClicked = true;
-      state.correctAnswerClicked = false;
       state.stopStopwatch = true;
+      state.showPlayAgainButton = true;
     },
     showSummary: (state) => {
-      state.summaryShow = true;
+      state.showSummary = true;
       state.recordSaved = true;
     },
     hideSummary: (state) => {
-      state.summaryShow = false;
+      state.showSummary = false;
     },
     goNextQuestion: (state) => {
       state.answerClicked = false;
       state.correctAnswer = null;
-      state.correctAnswerClicked = false;
+      state.showNextQuestionButton = false;
 
-      if (state.currentQuestionIndex < 9) {
+      if (state.currentQuestionIndex < LAST_QUESTION_INDEX) {
         state.currentQuestionIndex++;
       }
     },
@@ -82,30 +94,14 @@ export const {
 export const selectGame = (state) => state.game;
 export const selectFinishedAt = (state) => state.game.finishedAt;
 export const selectStartedAt = (state) => state.game.startedAt;
-export const selectCurrentIndex = (state) => state.game.currentQuestionIndex;
+export const selectStopStopwatch = (state) => state.game.stopStopwatch;
 
-// Write a synchronous outer function that receives the `text` parameter:
-export function saveRecord() {
-  // And then creates and returns the async thunk function:
+export function saveRecord(nickname) {
   return async function saveRecordThunk(dispatch, getState) {
     const state = getState();
-    const nickname = "test";
     const time = state.game.finishedAt - state.game.startedAt;
-    // ✅ Now we can use the text value and send it to the server
     const initialTodo = { nickname, time };
-    // const response = await client.post("/api/leaderboard", { nickname, time });
-    const response = await fetch("/api/leaderboard", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(initialTodo),
-    });
-    if (!response.ok) {
-      console.error("Failed to save record to leaderboard");
-      return;
-    }
-    const data = await response.json();
+    await leaderboardService.sendRecordToApi(initialTodo);
     dispatch(showSummary());
   };
 }

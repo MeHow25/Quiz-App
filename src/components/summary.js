@@ -1,5 +1,6 @@
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal, Spinner, Alert } from "react-bootstrap";
 import moment from "moment";
+import { useEffect, useState } from "react";
 import {
   FacebookIcon,
   FacebookMessengerIcon,
@@ -15,6 +16,36 @@ export function Summary(props) {
   const finishedAt = useSelector(selectFinishedAt);
   const startedAt = useSelector(selectStartedAt);
   const time = moment(finishedAt - startedAt).format("m:ss.SS");
+  const playerTime = finishedAt - startedAt;
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [playerPosition, setPlayerPosition] = useState(null);
+
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      try {
+        const response = await fetch("/api/leaderboard");
+        if (!response.ok) {
+          setError("Failed to fetch leaderboard");
+          setLoading(false);
+          return;
+        }
+        const data = await response.json();
+        const sortedData = data.sort((a, b) => a.time - b.time);
+
+        const position =
+          sortedData.findIndex((entry) => entry.time > playerTime) + 1;
+        setPlayerPosition(position > 0 ? position : sortedData.length + 1);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLeaderboard();
+  }, [playerTime]);
 
   return (
     <Modal
@@ -30,7 +61,22 @@ export function Summary(props) {
       </Modal.Header>
       <Modal.Body>
         <h1>Your time: {time}</h1>
-        <p>Share it to your friends:</p>
+        {loading && (
+          <div className="text-center mt-3">
+            <Spinner animation="border" variant="primary" size="sm" />
+          </div>
+        )}
+        {error && (
+          <Alert variant="warning" className="mt-3">
+            Could not determine leaderboard position
+          </Alert>
+        )}
+        {!loading && !error && playerPosition && (
+          <Alert variant="info" className="mt-3">
+            <strong>You are #{playerPosition} on the leaderboard!</strong>
+          </Alert>
+        )}
+        <p className="mt-4">Share it to your friends:</p>
         <FacebookShareButton url="https://www.example.com">
           <FacebookIcon size={32} round />
         </FacebookShareButton>

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { IApiService } from "@/lib/services/types.ts";
+import { IApiService } from "@/lib/services/types";
 
 export class FakeApiService implements IApiService {
   async fetchQuestions(
@@ -7,19 +7,18 @@ export class FakeApiService implements IApiService {
     _difficulty: string,
     _mode: string,
   ) {
-    const questionObject = {
-      incorrect_answers: ["False"],
-      correct_answer: "True",
-      all_answers: [
-        { value: "False", is_correct: false },
-        { value: "True", is_correct: true },
-      ],
-    };
-
     return {
       results: Array(10)
         .fill(null)
-        .map(() => ({ ...questionObject })),
+        .map((_, index) => ({
+          question: `Question number ${index + 1}`,
+          incorrect_answers: ["False"],
+          correct_answer: "True",
+          all_answers: [
+            { value: "False", is_correct: false },
+            { value: "True", is_correct: true },
+          ],
+        })),
     };
   }
 

@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Table, Spinner, Alert } from "react-bootstrap";
+import { Table, Spinner, Alert, Button } from "react-bootstrap";
+import moment from "moment";
 
 export default function Leaderboard() {
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [displayedCount, setDisplayedCount] = useState(10);
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
@@ -29,6 +31,13 @@ export default function Leaderboard() {
 
     fetchLeaderboard();
   }, []);
+
+  const showMore = () => {
+    setDisplayedCount((prevCount) => prevCount + 10);
+  };
+
+  const displayedData = leaderboardData.slice(0, displayedCount);
+  const hasMoreData = displayedCount < leaderboardData.length;
 
   if (loading) {
     return (
@@ -58,15 +67,22 @@ export default function Leaderboard() {
           </tr>
         </thead>
         <tbody>
-          {leaderboardData.map((entry, index) => (
+          {displayedData.map((entry, index) => (
             <tr key={entry.id}>
               <td>{index + 1}</td>
               <td>{entry.nickname}</td>
-              <td>{entry.time.toFixed(3)}</td>
+              <td>{moment(entry.time).format("m:ss.SS")}</td>
             </tr>
           ))}
         </tbody>
       </Table>
+      {hasMoreData && (
+        <div className="text-center mb-4">
+          <Button onClick={showMore} variant="primary" className="">
+            Show More
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

@@ -3,18 +3,18 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Form, Spinner, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchAsync, selectCategories } from "@/lib/redux/categories-slice";
+import {
+  fetchQuestionsAsync,
+  selectQuestions,
+  resetQuestions,
+} from "@/lib/redux/questions-slice";
+import { start } from "@/lib/redux/game-slice";
 import { DifficultyInput } from "./difficulty-input";
 import { AnswerTypeInput } from "./answer-type-input";
 import { Game } from "./game";
 import { ErrorToast } from "./error-toast";
 import Leaderboard from "./leaderboard";
-import { fetchAsync, selectCategories } from "../lib/redux/categories-slice";
-import {
-  fetchQuestionsAsync,
-  selectQuestions,
-  resetQuestions,
-} from "../lib/redux/questions-slice";
-import { start } from "../lib/redux/game-slice";
 
 export default function Main() {
   const categories = useSelector(selectCategories);
@@ -116,9 +116,11 @@ export default function Main() {
       {gameStarted && (
         <Game data-testid="game" startGame={startGame} exitGame={exitGame} />
       )}
-      <Container className="mt-5">
-        <Leaderboard />
-      </Container>
+      {!gameStarted && (
+        <Container className="mt-5">
+          <Leaderboard />
+        </Container>
+      )}
     </div>
   );
 }

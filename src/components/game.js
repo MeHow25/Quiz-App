@@ -1,11 +1,8 @@
 import { Button, Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { Progress } from "./progress";
-import { CurrentQuestion } from "./current-question";
-import { Summary } from "./summary";
-import { Stopwatch } from "./stopwatch";
-import { selectQuestions } from "../lib/redux/questions-slice";
+import { useSession } from "next-auth/react";
+import { selectQuestions } from "@/lib/redux/questions-slice";
 import {
   correctAnswer,
   goNextQuestion,
@@ -16,28 +13,32 @@ import {
   showTimer,
   hideSummary,
   saveRecord,
-} from "../lib/redux/game-slice";
+  showSummary,
+} from "@/lib/redux/game-slice";
+import { Progress } from "./progress";
+import { CurrentQuestion } from "./current-question";
+import { Summary } from "./summary";
+import { Stopwatch } from "./stopwatch";
 
 export function Game({ exitGame }) {
+  const { data: session } = useSession();
+  const nickname = session?.user?.name || "Guest";
+
   const questions = useSelector(selectQuestions).value;
   const game = useSelector(selectGame);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (game.winGame && !game.recordSaved) {
-      dispatch(saveRecord());
+    if (game.wonGame && !game.recordSaved) {
+      dispatch(saveRecord(nickname));
     }
-  }, [game.winGame, game.recordSaved]);
+  }, [game.wonGame, game.recordSaved]);
 
   const currentQuestion = questions[game.currentQuestionIndex];
 
-  function startGame() {
-    dispatch(start());
-  }
-
   function startGameAgain() {
     dispatch(startAgain());
-    setTimeout(() => dispatch(showTimer(), 1));
-    startGame();
+    dispatch(start());
+    dispatch(showTimer());
   }
 
   function handleCorrectAnswer() {
@@ -72,7 +73,7 @@ export function Game({ exitGame }) {
           </Button>
         </Col>
         <Col>
-          {game.renderTimer && <Stopwatch stopStopwatch={game.stopStopwatch} />}
+          <Stopwatch />
         </Col>
       </Row>
       <Progress currentQuestionIndex={game.currentQuestionIndex} />
@@ -84,7 +85,7 @@ export function Game({ exitGame }) {
             handleIncorrectAnswer={handleIncorrectAnswer}
             clicked={game.answerClicked}
           />
-          {game.correctAnswerClicked && game.winGame === false && (
+          {game.showNextQuestionButton && (
             <li className="list-group-item">
               <h2>Correct answer!</h2>
               <Button variant="primary" onClick={goToNextQuestion}>
@@ -92,7 +93,7 @@ export function Game({ exitGame }) {
               </Button>
             </li>
           )}
-          {game.answerClicked && game.correctAnswerClicked === false && (
+          {game.showPlayAgainButton && (
             <li className="list-group-item">
               <h2>Wrong answer!</h2>
               <Button variant="primary" onClick={startGameAgain}>
@@ -100,7 +101,7 @@ export function Game({ exitGame }) {
               </Button>
             </li>
           )}
-          {game.correctAnswerClicked && game.winGame && (
+          {game.wonGame && (
             <li className="list-group-item">
               <h2>Congratulations!</h2>
               <Button variant="primary" onClick={showSummaryModal}>
@@ -119,7 +120,7 @@ export function Game({ exitGame }) {
       </div>
       <Summary
         data-testid="summary"
-        show={game.summaryShow}
+        show={game.showSummary}
         onHide={() => dispatch(hideSummary())}
       />
     </>
