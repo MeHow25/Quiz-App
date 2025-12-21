@@ -9,7 +9,11 @@ import { store } from "@/lib/redux/store";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RootLayout({ children }) {
+interface RootLayoutProps {
+  children: React.ReactNode;
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body className={inter.className}>

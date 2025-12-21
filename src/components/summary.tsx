@@ -12,15 +12,20 @@ import {
 import { useSelector } from "react-redux";
 import { selectFinishedAt, selectStartedAt } from "@/lib/redux/game-slice";
 
-export function Summary(props) {
+interface SummaryProps {
+  show: boolean;
+  onHide: () => void;
+}
+
+export function Summary(props: SummaryProps) {
   const finishedAt = useSelector(selectFinishedAt);
   const startedAt = useSelector(selectStartedAt);
   const time = moment(finishedAt - startedAt).format("m:ss.SS");
   const playerTime = finishedAt - startedAt;
 
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [playerPosition, setPlayerPosition] = useState(null);
+  const [error, setError] = useState<string | null>(null);
+  const [playerPosition, setPlayerPosition] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
@@ -32,13 +37,13 @@ export function Summary(props) {
           return;
         }
         const data = await response.json();
-        const sortedData = data.sort((a, b) => a.time - b.time);
+        const sortedData = data.sort((a: any, b: any) => a.time - b.time);
 
         const position =
-          sortedData.findIndex((entry) => entry.time > playerTime) + 1;
+          sortedData.findIndex((entry: any) => entry.time > playerTime) + 1;
         setPlayerPosition(position > 0 ? position : sortedData.length + 1);
       } catch (err) {
-        setError(err.message);
+        setError(err instanceof Error ? err.message : "Unknown error");
       } finally {
         setLoading(false);
       }

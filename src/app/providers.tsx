@@ -5,7 +5,11 @@ import { Provider as ReduxProvider } from "react-redux";
 import { store } from "@/lib/redux/store";
 import { Container, Row, Col } from "react-bootstrap";
 
-export function Providers({ children }) {
+interface ProvidersProps {
+  children: React.ReactNode;
+}
+
+export function Providers({ children }: ProvidersProps) {
   return (
     <SessionProvider>
       <ReduxProvider store={store}>

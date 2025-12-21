@@ -10,7 +10,11 @@ export const store = configureStore({
     game: gameReducer,
   },
 });
-export const setupStore = (preloadedState) =>
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+
+export const setupStore = (preloadedState?: RootState) =>
   configureStore({
     reducer: {
       categories: categoriesReducer,

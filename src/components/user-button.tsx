@@ -6,7 +6,7 @@ import { Dropdown, Button, Image } from "react-bootstrap";
 export default function UserButton() {
   const { data: session } = useSession();
 
-  if (session) {
+  if (session?.user) {
     return (
       <div className="flex items-center gap-2">
         <Dropdown>

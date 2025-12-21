@@ -1,8 +1,14 @@
 import { Button, ButtonGroup } from "react-bootstrap";
 import { useEffect, useState } from "react";
 
-export function DifficultyInput({ setDifficulty }) {
-  const [selectedDifficulty, setSelectedDifficulty] = useState(null);
+type Difficulty = "easy" | "medium" | "hard" | null;
+
+interface DifficultyInputProps {
+  setDifficulty: (difficulty: Difficulty) => void;
+}
+
+export function DifficultyInput({ setDifficulty }: DifficultyInputProps) {
+  const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>(null);
 
   useEffect(() => {
     if (selectedDifficulty) {

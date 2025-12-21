@@ -1,6 +1,10 @@
 import { ProgressBar } from "react-bootstrap";
 
-export function Progress({ currentQuestionIndex }) {
+interface ProgressProps {
+  currentQuestionIndex: number;
+}
+
+export function Progress({ currentQuestionIndex }: ProgressProps) {
   const currentQuestionNumber = currentQuestionIndex + 1;
 
   return (

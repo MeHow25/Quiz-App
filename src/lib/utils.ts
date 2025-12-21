@@ -1,4 +1,4 @@
-export function decodeHTML(html) {
+export function decodeHTML(html: string): string {
   const txt = document.createElement("textarea");
   txt.innerHTML = html;
   return txt.value;

@@ -1,6 +1,13 @@
 import { Button, ButtonGroup } from "react-bootstrap";
 
-export function AnswerTypeInput({ setMode, mode }) {
+type AnswerMode = "enabled" | "disabled";
+
+interface AnswerTypeInputProps {
+  setMode: (mode: AnswerMode) => void;
+  mode: AnswerMode;
+}
+
+export function AnswerTypeInput({ setMode, mode }: AnswerTypeInputProps) {
   return (
     <ButtonGroup aria-label="Basic example" suppressHydrationWarning>
       <Button

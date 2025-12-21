@@ -1,12 +1,20 @@
 import { Answer } from "./answer";
 import { decodeHTML } from "../lib/utils";
+import type { Question } from "@/lib/services/types";
+
+interface CurrentQuestionProps {
+  currentQuestion: Question;
+  handleIncorrectAnswer: () => void;
+  handleCorrectAnswer: () => void;
+  clicked: boolean;
+}
 
 export function CurrentQuestion({
   currentQuestion,
   handleIncorrectAnswer,
   handleCorrectAnswer,
   clicked,
-}) {
+}: CurrentQuestionProps) {
   return (
     <>
       <li className="list-group-item">

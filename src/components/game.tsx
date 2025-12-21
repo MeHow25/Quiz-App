@@ -1,8 +1,9 @@
+"use client";
+
 import { Button, Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { selectQuestions } from "@/lib/redux/questions-slice";
 import {
   correctAnswer,
   goNextQuestion,
@@ -15,23 +16,33 @@ import {
   saveRecord,
   showSummary,
 } from "@/lib/redux/game-slice";
+import { selectQuestionsValue } from "@/lib/redux/questions-slice";
 import { Progress } from "./progress";
 import { CurrentQuestion } from "./current-question";
 import { Summary } from "./summary";
 import { Stopwatch } from "./stopwatch";
+import type { AppDispatch } from "@/lib/redux/store";
 
-export function Game({ exitGame }) {
+interface GameProps {
+  exitGame: () => void;
+}
+
+export function Game({ exitGame }: GameProps) {
   const { data: session } = useSession();
   const nickname = session?.user?.name || "Guest";
 
-  const questions = useSelector(selectQuestions).value;
+  const questions = useSelector(selectQuestionsValue);
   const game = useSelector(selectGame);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     if (game.wonGame && !game.recordSaved) {
       dispatch(saveRecord(nickname));
     }
-  }, [game.wonGame, game.recordSaved]);
+  }, [game.wonGame, game.recordSaved, dispatch, nickname]);
+
+  if (!questions) {
+    return null;
+  }
 
   const currentQuestion = questions[game.currentQuestionIndex];
 

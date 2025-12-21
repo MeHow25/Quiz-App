@@ -1,4 +1,6 @@
-const mockedQuestions = [];
+import { Question } from "@/lib/services/types";
+
+const mockedQuestions: Question[] = [];
 
 for (let i = 1; i < 11; i++) {
   mockedQuestions[i - 1] = {

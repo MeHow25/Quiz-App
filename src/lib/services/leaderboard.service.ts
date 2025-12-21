@@ -19,4 +19,4 @@ const leaderboardService = {
   },
 };
 
-module.exports = leaderboardService;
+export default leaderboardService;

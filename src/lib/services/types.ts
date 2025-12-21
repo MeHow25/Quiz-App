@@ -1,4 +1,5 @@
 export interface Question {
+  question: string;
   incorrect_answers: string[];
   correct_answer: string;
   all_answers: { value: string; is_correct: boolean }[];

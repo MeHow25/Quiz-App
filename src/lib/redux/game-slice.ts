@@ -1,7 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 import leaderboardService from "@/lib/services/leaderboard.service";
+import type { RootState, AppDispatch } from "./store";
 
-const initialState = {
+interface GameState {
+  currentQuestionIndex: number;
+  wonGame: boolean;
+  answerClicked: boolean;
+  stopStopwatch: boolean;
+  showTimer: boolean;
+  restartCount: number;
+  showSummary: boolean;
+  startedAt: number;
+  finishedAt: number;
+  recordSaved: boolean;
+  showNextQuestionButton: boolean;
+  showPlayAgainButton: boolean;
+}
+
+const initialState: GameState = {
   currentQuestionIndex: 0,
   wonGame: false,
   answerClicked: false,
@@ -19,7 +35,7 @@ const initialState = {
 
 const LAST_QUESTION_INDEX = 9;
 
-const resetGameState = (state) => {
+const resetGameState = (state: GameState) => {
   state.answerClicked = false;
   state.stopStopwatch = false;
 };
@@ -71,7 +87,6 @@ export const gameSlice = createSlice({
     },
     goNextQuestion: (state) => {
       state.answerClicked = false;
-      state.correctAnswer = null;
       state.showNextQuestionButton = false;
 
       if (state.currentQuestionIndex < LAST_QUESTION_INDEX) {
@@ -91,13 +106,13 @@ export const {
   hideSummary,
 } = gameSlice.actions;
 
-export const selectGame = (state) => state.game;
-export const selectFinishedAt = (state) => state.game.finishedAt;
-export const selectStartedAt = (state) => state.game.startedAt;
-export const selectStopStopwatch = (state) => state.game.stopStopwatch;
+export const selectGame = (state: RootState) => state.game;
+export const selectFinishedAt = (state: RootState) => state.game.finishedAt;
+export const selectStartedAt = (state: RootState) => state.game.startedAt;
+export const selectStopStopwatch = (state: RootState) => state.game.stopStopwatch;
 
-export function saveRecord(nickname) {
-  return async function saveRecordThunk(dispatch, getState) {
+export function saveRecord(nickname: string) {
+  return async function saveRecordThunk(dispatch: AppDispatch, getState: () => RootState) {
     const state = getState();
     const time = state.game.finishedAt - state.game.startedAt;
     const initialTodo = { nickname, time };

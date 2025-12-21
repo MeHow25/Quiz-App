@@ -3,11 +3,14 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Form, Spinner, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAsync, selectCategories } from "@/lib/redux/categories-slice";
+import { fetchAsync, selectCategoriesValue } from "@/lib/redux/categories-slice";
 import {
   fetchQuestionsAsync,
-  selectQuestions,
   resetQuestions,
+  selectQuestionsValue,
+  selectQuestionsLoading,
+  selectNoResults,
+  selectQuestionsStatus
 } from "@/lib/redux/questions-slice";
 import { start } from "@/lib/redux/game-slice";
 import { DifficultyInput } from "./difficulty-input";
@@ -15,17 +18,24 @@ import { AnswerTypeInput } from "./answer-type-input";
 import { Game } from "./game";
 import { ErrorToast } from "./error-toast";
 import Leaderboard from "./leaderboard";
+import type { AppDispatch } from "@/lib/redux/store";
+
+type Difficulty = "easy" | "medium" | "hard" | null;
+type AnswerMode = "enabled" | "disabled";
 
 export default function Main() {
-  const categories = useSelector(selectCategories);
-  const questions = useSelector(selectQuestions);
-  const dispatch = useDispatch();
+  const categories = useSelector(selectCategoriesValue);
+  const questionsValue = useSelector(selectQuestionsValue);
+  const questionsLoading = useSelector(selectQuestionsLoading);
+  const questionsStatus = useSelector(selectQuestionsStatus);
+  const noResults = useSelector(selectNoResults);
+  const dispatch = useDispatch<AppDispatch>();
 
-  const [showNoResultsToast, setShowNoResultsToast] = useState(null);
-  const gameStarted = questions.value && questions.value.length > 0;
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedDifficulty, setSelectedDifficulty] = useState(null);
-  const [trueFalseMode, setTrueFalseMode] = useState("disabled");
+  const [showNoResultsToast, setShowNoResultsToast] = useState<boolean>(false);
+  const gameStarted = questionsValue && questionsValue.length > 0;
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>(null);
+  const [trueFalseMode, setTrueFalseMode] = useState<AnswerMode>("disabled");
 
   useEffect(() => {
     dispatch(fetchAsync());
@@ -33,10 +43,10 @@ export default function Main() {
   }, []);
 
   useEffect(() => {
-    setShowNoResultsToast(questions.noResults);
-  }, [questions]);
+    setShowNoResultsToast(noResults);
+  }, [noResults]);
 
-  function setDifficulty(level) {
+  function setDifficulty(level: Difficulty) {
     setSelectedDifficulty(level);
   }
   function startGame() {
@@ -86,7 +96,7 @@ export default function Main() {
           <Col>
             <AnswerTypeInput setMode={setTrueFalseMode} mode={trueFalseMode} />
           </Col>
-          {questions.status === "loading" && (
+          {questionsLoading && (
             <Spinner
               data-testid="spinner"
               className="mt-4"
@@ -94,7 +104,7 @@ export default function Main() {
               variant="primary"
             />
           )}
-          {questions.status === "idle" && (
+          {questionsStatus === "idle" && (
             <Button
               onClick={startGame}
               variant="primary"
@@ -114,7 +124,7 @@ export default function Main() {
         </Col>
       )}
       {gameStarted && (
-        <Game data-testid="game" startGame={startGame} exitGame={exitGame} />
+        <Game data-testid="game" exitGame={exitGame} />
       )}
       {!gameStarted && (
         <Container className="mt-5">
