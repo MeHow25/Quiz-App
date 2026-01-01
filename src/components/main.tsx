@@ -3,16 +3,19 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Form, Spinner, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAsync, selectCategoriesValue } from "@/lib/redux/categories-slice";
+import {
+  fetchAsync,
+  selectCategoriesValue,
+} from "@/lib/redux/categories-slice";
 import {
   fetchQuestionsAsync,
   resetQuestions,
   selectQuestionsValue,
   selectQuestionsLoading,
   selectNoResults,
-  selectQuestionsStatus
+  selectQuestionsStatus,
 } from "@/lib/redux/questions-slice";
-import { start } from "@/lib/redux/game-slice";
+import { resetCounter, start } from "@/lib/redux/game-slice";
 import { DifficultyInput } from "./difficulty-input";
 import { AnswerTypeInput } from "./answer-type-input";
 import { Game } from "./game";
@@ -34,7 +37,8 @@ export default function Main() {
   const [showNoResultsToast, setShowNoResultsToast] = useState<boolean>(false);
   const gameStarted = questionsValue && questionsValue.length > 0;
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>(null);
+  const [selectedDifficulty, setSelectedDifficulty] =
+    useState<Difficulty>(null);
   const [trueFalseMode, setTrueFalseMode] = useState<AnswerMode>("disabled");
 
   useEffect(() => {
@@ -50,6 +54,7 @@ export default function Main() {
     setSelectedDifficulty(level);
   }
   function startGame() {
+    dispatch(resetCounter());
     dispatch(
       fetchQuestionsAsync({
         categoryId: selectedCategory,
@@ -123,9 +128,7 @@ export default function Main() {
           />
         </Col>
       )}
-      {gameStarted && (
-        <Game data-testid="game" exitGame={exitGame} />
-      )}
+      {gameStarted && <Game data-testid="game" exitGame={exitGame} />}
       {!gameStarted && (
         <Container className="mt-5">
           <Leaderboard />

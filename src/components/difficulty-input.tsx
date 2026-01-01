@@ -8,7 +8,8 @@ interface DifficultyInputProps {
 }
 
 export function DifficultyInput({ setDifficulty }: DifficultyInputProps) {
-  const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>(null);
+  const [selectedDifficulty, setSelectedDifficulty] =
+    useState<Difficulty>(null);
 
   useEffect(() => {
     if (selectedDifficulty) {
@@ -17,7 +18,7 @@ export function DifficultyInput({ setDifficulty }: DifficultyInputProps) {
   }, [selectedDifficulty, setDifficulty]);
 
   return (
-    <ButtonGroup aria-label="Basic example" suppressHydrationWarning>
+    <ButtonGroup aria-label="difficulty mode" suppressHydrationWarning>
       <Button
         data-testid="difficulty-mode-easy"
         variant={selectedDifficulty === "easy" ? "success" : "secondary"}

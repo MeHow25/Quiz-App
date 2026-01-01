@@ -2,7 +2,12 @@ export interface Question {
   question: string;
   incorrect_answers: string[];
   correct_answer: string;
-  all_answers: { value: string; is_correct: boolean }[];
+  all_answers: AnswerOption[];
+}
+
+export interface AnswerOption {
+  value: string;
+  is_correct: boolean;
 }
 
 export interface Category {
@@ -11,6 +16,13 @@ export interface Category {
 }
 
 export type QuestionsResponse = { results: Question[] } | "noResults" | null;
+
+export interface LeaderboardEntry {
+  id?: number;
+  nickname: string;
+  time: number;
+  created_at?: string;
+}
 
 export interface IApiService {
   fetchQuestions(

@@ -17,7 +17,6 @@ export function Stopwatch() {
         clearInterval(id);
       };
     }
-    // eslint-disable-next-line
   }, [startTimer]);
 
   useEffect(() => {
@@ -26,7 +25,6 @@ export function Stopwatch() {
     } else {
       setStartTimer(true);
     }
-    // eslint-disable-next-line
   }, [stopStopwatch]);
 
   useEffect(() => {

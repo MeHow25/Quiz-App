@@ -4,7 +4,12 @@ import type {
   Category,
   QuestionsResponse,
   IApiService,
+  AnswerOption,
 } from "./types";
+
+function sortAnswers(answers: AnswerOption[]): AnswerOption[] {
+  return answers.sort((a, b) => a.value.localeCompare(b.value));
+}
 
 export class ApiService implements IApiService {
   private noResultsResponseCodes = [1, 5];
@@ -32,14 +37,18 @@ export class ApiService implements IApiService {
         return "noResults";
       }
       result?.results?.forEach((question: Question) => {
-        let answers: string[] = [];
+        const answers: string[] = [];
         answers.push(...question.incorrect_answers);
         answers.push(question.correct_answer);
-        answers = shuffle(answers);
         question.all_answers = answers.map((answer) => ({
           value: answer,
           is_correct: answer === question.correct_answer,
         }));
+        if (question.all_answers.length > 2) {
+          question.all_answers = shuffle(question.all_answers);
+        } else {
+          question.all_answers = sortAnswers(question.all_answers);
+        }
       });
       return result;
     } catch (error) {
@@ -48,7 +57,6 @@ export class ApiService implements IApiService {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async fetchCategories(): Promise<Category[] | void> {
     try {
       const response = await fetch("https://opentdb.com/api_category.php");

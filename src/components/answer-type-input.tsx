@@ -9,7 +9,7 @@ interface AnswerTypeInputProps {
 
 export function AnswerTypeInput({ setMode, mode }: AnswerTypeInputProps) {
   return (
-    <ButtonGroup aria-label="Basic example" suppressHydrationWarning>
+    <ButtonGroup aria-label="answer type" suppressHydrationWarning>
       <Button
         data-testid="true-false-disabled"
         suppressHydrationWarning

@@ -11,6 +11,7 @@ import {
 } from "react-share";
 import { useSelector } from "react-redux";
 import { selectFinishedAt, selectStartedAt } from "@/lib/redux/game-slice";
+import { LeaderboardEntry } from "@/lib/services/types";
 
 interface SummaryProps {
   show: boolean;
@@ -36,11 +37,11 @@ export function Summary(props: SummaryProps) {
           setLoading(false);
           return;
         }
-        const data = await response.json();
-        const sortedData = data.sort((a: any, b: any) => a.time - b.time);
+        const data: LeaderboardEntry[] = await response.json();
+        const sortedData = data.sort((a, b) => a.time - b.time);
 
         const position =
-          sortedData.findIndex((entry: any) => entry.time > playerTime) + 1;
+          sortedData.findIndex((entry) => entry.time > playerTime) + 1;
         setPlayerPosition(position > 0 ? position : sortedData.length + 1);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Unknown error");

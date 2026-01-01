@@ -21,7 +21,7 @@ import { Progress } from "./progress";
 import { CurrentQuestion } from "./current-question";
 import { Summary } from "./summary";
 import { Stopwatch } from "./stopwatch";
-import type { AppDispatch } from "@/lib/redux/store";
+import type { AppDispatch, RootState } from "@/lib/redux/store";
 
 interface GameProps {
   exitGame: () => void;
@@ -32,6 +32,9 @@ export function Game({ exitGame }: GameProps) {
   const nickname = session?.user?.name || "Guest";
 
   const questions = useSelector(selectQuestionsValue);
+  const restartCount = useSelector(
+    (state: RootState) => state.game.restartCount,
+  );
   const game = useSelector(selectGame);
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
@@ -72,7 +75,7 @@ export function Game({ exitGame }: GameProps) {
     <>
       <Row style={{ marginTop: "15vh" }} data-testid="game-container">
         <Col>
-          <h1>Quiz Game</h1>
+          <h1>Restarts: {restartCount}</h1>
         </Col>
         <Col>
           <Button

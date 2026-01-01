@@ -1,12 +1,13 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { AnswerTypeInput } from "../src/components/answer-type-input";
+import { AnswerTypeInput } from "@/components/answer-type-input";
 
 describe("Answer type input", () => {
   it("renders correctly", () => {
     render(
       <AnswerTypeInput
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         setMode={function (mode: "disabled" | "enabled"): void {
           throw new Error("Function not implemented.");
         }}

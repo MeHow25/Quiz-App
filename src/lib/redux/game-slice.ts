@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import leaderboardService from "@/lib/services/leaderboard.service";
 import type { RootState, AppDispatch } from "./store";
 
-interface GameState {
+export interface GameState {
   currentQuestionIndex: number;
   wonGame: boolean;
   answerClicked: boolean;
@@ -57,6 +57,9 @@ export const gameSlice = createSlice({
       state.showPlayAgainButton = false;
       resetGameState(state);
     },
+    resetCounter: (state) => {
+      state.restartCount = 0;
+    },
     showTimer: (state) => {
       state.showTimer = true;
     },
@@ -98,6 +101,7 @@ export const gameSlice = createSlice({
 export const {
   start,
   startAgain,
+  resetCounter,
   correctAnswer,
   incorrectAnswer,
   showSummary,
@@ -109,10 +113,14 @@ export const {
 export const selectGame = (state: RootState) => state.game;
 export const selectFinishedAt = (state: RootState) => state.game.finishedAt;
 export const selectStartedAt = (state: RootState) => state.game.startedAt;
-export const selectStopStopwatch = (state: RootState) => state.game.stopStopwatch;
+export const selectStopStopwatch = (state: RootState) =>
+  state.game.stopStopwatch;
 
 export function saveRecord(nickname: string) {
-  return async function saveRecordThunk(dispatch: AppDispatch, getState: () => RootState) {
+  return async function saveRecordThunk(
+    dispatch: AppDispatch,
+    getState: () => RootState,
+  ) {
     const state = getState();
     const time = state.game.finishedAt - state.game.startedAt;
     const initialTodo = { nickname, time };

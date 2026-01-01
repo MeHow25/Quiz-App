@@ -1,6 +1,6 @@
-import { Answer } from "./answer";
 import { decodeHTML } from "../lib/utils";
 import type { Question } from "@/lib/services/types";
+import { Answer } from "@/components/answer";
 
 interface CurrentQuestionProps {
   currentQuestion: Question;
