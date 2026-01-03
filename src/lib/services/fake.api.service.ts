@@ -1,10 +1,12 @@
-/* eslint-disable no-unused-vars */
 import { IApiService } from "@/lib/services/types";
 
 export class FakeApiService implements IApiService {
   async fetchQuestions(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _categoryId: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _difficulty: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _mode: string,
   ) {
     return {

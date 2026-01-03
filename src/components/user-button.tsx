@@ -2,6 +2,7 @@
 
 import { useSession, signIn, signOut } from "next-auth/react";
 import { Dropdown, Button, Spinner } from "react-bootstrap";
+import Image from "next/image";
 
 export default function UserButton() {
   const { data: session, status } = useSession();
@@ -30,7 +31,7 @@ export default function UserButton() {
           className="d-flex align-items-center gap-2"
         >
           {session.user.image ? (
-            <img
+            <Image
               src={session.user.image}
               alt={session.user.name ?? "User avatar"}
               width={32}
