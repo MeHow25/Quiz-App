@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { Table, Spinner, Alert, Button } from "react-bootstrap";
 import moment from "moment";
@@ -11,7 +9,9 @@ interface LeaderboardEntry {
 }
 
 export default function Leaderboard() {
-  const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([]);
+  const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>(
+    [],
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [displayedCount, setDisplayedCount] = useState(10);
@@ -26,7 +26,9 @@ export default function Leaderboard() {
           return;
         }
         const data = await response.json();
-        const sortedData = data.sort((a: LeaderboardEntry, b: LeaderboardEntry) => a.time - b.time);
+        const sortedData = data.sort(
+          (a: LeaderboardEntry, b: LeaderboardEntry) => a.time - b.time,
+        );
         setLeaderboardData(sortedData);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Unknown error");
