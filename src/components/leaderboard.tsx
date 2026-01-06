@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Table, Spinner, Alert, Button } from "react-bootstrap";
-import moment from "moment";
+import { formatDuration } from "@/lib/utils";
 
 interface LeaderboardEntry {
   id: string | number;
@@ -79,7 +79,7 @@ export default function Leaderboard() {
             <tr key={entry.id}>
               <td>{index + 1}</td>
               <td>{entry.nickname}</td>
-              <td>{moment(entry.time).format("m:ss.SS")}</td>
+              <td>{formatDuration(entry.time)}</td>
             </tr>
           ))}
         </tbody>

@@ -1,5 +1,4 @@
 import { Button, Modal, Spinner, Alert } from "react-bootstrap";
-import moment from "moment";
 import { useEffect, useState } from "react";
 import {
   FacebookIcon,
@@ -12,6 +11,7 @@ import {
 import { useSelector } from "react-redux";
 import { selectFinishedAt, selectStartedAt } from "@/lib/redux/game-slice";
 import { LeaderboardEntry } from "@/lib/services/types";
+import { formatDuration } from "@/lib/utils";
 
 interface SummaryProps {
   show: boolean;
@@ -21,7 +21,7 @@ interface SummaryProps {
 export function Summary(props: SummaryProps) {
   const finishedAt = useSelector(selectFinishedAt);
   const startedAt = useSelector(selectStartedAt);
-  const time = moment(finishedAt - startedAt).format("m:ss.SS");
+  const time = formatDuration(finishedAt - startedAt);
   const playerTime = finishedAt - startedAt;
 
   const [loading, setLoading] = useState(true);
