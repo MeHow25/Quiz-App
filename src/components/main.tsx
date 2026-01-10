@@ -74,7 +74,7 @@ export default function Main() {
     <div>
       {!gameStarted && categories != null && (
         <Col md={{ span: 4, offset: 4 }}>
-          <h1 style={{ marginTop: "15vh" }}>Quiz Game</h1>
+          <h1 className="game-header">Quiz Game</h1>
           <Form.Label className="mt-3">Category</Form.Label>
           <Form.Select
             data-testid="category-select"

@@ -9,8 +9,7 @@ export function Progress({ currentQuestionIndex }: ProgressProps) {
 
   return (
     <ProgressBar
-      className="mb-1"
-      style={{ height: "4vh" }}
+      className="mb-1 progress-bar-custom"
       min={1}
       max={10}
       now={currentQuestionNumber}

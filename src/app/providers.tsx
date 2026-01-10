@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { SessionProvider } from "next-auth/react";
 import { Provider as ReduxProvider } from "react-redux";
@@ -15,9 +15,7 @@ export function Providers({ children }: ProvidersProps) {
       <ReduxProvider store={store}>
         <Container>
           <Row>
-            <Col style={{ textAlign: "center" }}>
-              {children}
-            </Col>
+            <Col className="text-center">{children}</Col>
           </Row>
         </Container>
       </ReduxProvider>

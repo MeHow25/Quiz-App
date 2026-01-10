@@ -49,7 +49,7 @@ describe("Page", () => {
     fireEvent.click(wrapper.getByTestId("difficulty-mode-medium"));
     fireEvent.click(wrapper.getByTestId("true-false-disabled"));
     fireEvent.click(wrapper.getByTestId("start-button"));
-    expect(await screen.findByTestId("game-container")).toBeInTheDocument();
+    expect(await screen.findByTestId("game-header")).toBeInTheDocument();
 
     for (let i = 1; i < 10; i++) {
       expect(wrapper.getByText(`Question number ${i}`)).toBeInTheDocument();
@@ -76,7 +76,7 @@ describe("Page", () => {
     fireEvent.click(wrapper.getByTestId("difficulty-mode-easy"));
     fireEvent.click(wrapper.getByTestId("true-false-disabled"));
     fireEvent.click(wrapper.getByTestId("start-button"));
-    const gc: HTMLElement = await screen.findByTestId("game-container");
+    const gc: HTMLElement = await screen.findByTestId("game-header");
     expect(gc).toBeInTheDocument();
     expect(await wrapper.findByText("Question number 1")).toBeInTheDocument();
 
@@ -100,7 +100,7 @@ describe("Page", () => {
     fireEvent.click(wrapper.getByTestId("difficulty-mode-hard"));
     fireEvent.click(wrapper.getByTestId("true-false-disabled"));
     fireEvent.click(wrapper.getByTestId("start-button"));
-    expect(await wrapper.findByTestId("game-container")).toBeInTheDocument();
+    expect(await wrapper.findByTestId("game-header")).toBeInTheDocument();
     expect(await wrapper.findByText("Question number 1")).toBeInTheDocument();
 
     fireEvent.click(await wrapper.findByTestId("exit-game-button"));
@@ -128,9 +128,7 @@ describe("Page", () => {
     fireEvent.click(wrapper.getByTestId("start-button"));
 
     expect(await wrapper.findByTestId("error-toast")).toBeInTheDocument();
-    expect(
-      await wrapper.queryByTestId("game-container"),
-    ).not.toBeInTheDocument();
+    expect(await wrapper.queryByTestId("game-header")).not.toBeInTheDocument();
   });
 
   it("should not show next question button", async () => {
@@ -145,7 +143,7 @@ describe("Page", () => {
     fireEvent.click(wrapper.getByTestId("difficulty-mode-easy"));
     fireEvent.click(wrapper.getByTestId("true-false-disabled"));
     fireEvent.click(wrapper.getByTestId("start-button"));
-    expect(await wrapper.findByTestId("game-container")).toBeInTheDocument();
+    expect(await wrapper.findByTestId("game-header")).toBeInTheDocument();
     expect(wrapper.queryByText("Next question")).not.toBeInTheDocument();
     fireEvent.click(wrapper.getByText("True"));
     fireEvent.click(wrapper.getByText("Next question"));

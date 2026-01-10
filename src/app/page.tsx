@@ -4,10 +4,7 @@ import UserButton from "@/components/user-button";
 export default function HomePage() {
   return (
     <>
-      <div
-        className="d-flex justify-content-end p-3"
-        style={{ position: "absolute", top: 0, right: 0, zIndex: 1000 }}
-      >
+      <div className="user-button-container position-absolute top-0 end-0 p-3">
         <UserButton />
       </div>
       <Main />

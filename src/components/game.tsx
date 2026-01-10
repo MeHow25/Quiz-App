@@ -73,7 +73,7 @@ export function Game({ exitGame }: GameProps) {
 
   return (
     <>
-      <Row style={{ marginTop: "15vh" }} data-testid="game-container">
+      <Row className="game-header" data-testid="game-header">
         <Col>
           <h1>Restarts: {restartCount}</h1>
         </Col>

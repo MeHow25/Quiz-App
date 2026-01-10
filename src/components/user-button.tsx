@@ -36,8 +36,7 @@ export default function UserButton() {
               alt={session.user.name ?? "User avatar"}
               width={32}
               height={32}
-              className="rounded-circle"
-              style={{ objectFit: "cover" }}
+              className="rounded-circle avatar-cover"
             />
           ) : (
             <span>{session.user.name ?? "User"}</span>
