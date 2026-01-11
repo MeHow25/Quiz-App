@@ -10,8 +10,8 @@ import {
 } from "react-share";
 import { useSelector } from "react-redux";
 import { selectFinishedAt, selectStartedAt } from "@/lib/redux/game-slice";
-import { LeaderboardEntry } from "@/lib/services/types";
 import { formatDuration } from "@/lib/utils";
+import leaderboardService from "@/lib/services/leaderboard.service";
 
 interface SummaryProps {
   show: boolean;
@@ -31,14 +31,7 @@ export function Summary(props: SummaryProps) {
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const response = await fetch("/api/leaderboard");
-        if (!response.ok) {
-          setError("Failed to fetch leaderboard");
-          setLoading(false);
-          return;
-        }
-        const data: LeaderboardEntry[] = await response.json();
-        const sortedData = data.sort((a, b) => a.time - b.time);
+        const sortedData = await leaderboardService.fetchLeaderboard();
 
         const position =
           sortedData.findIndex((entry) => entry.time > playerTime) + 1;

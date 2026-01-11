@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
 import { Table, Spinner, Alert, Button } from "react-bootstrap";
 import { formatDuration } from "@/lib/utils";
-
-interface LeaderboardEntry {
-  id: string | number;
-  nickname: string;
-  time: number;
-}
+import leaderboardService from "@/lib/services/leaderboard.service";
+import { LeaderboardEntry } from "@/lib/services/types";
 
 export default function Leaderboard() {
   const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>(
@@ -19,17 +15,8 @@ export default function Leaderboard() {
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const response = await fetch("/api/leaderboard");
-        if (!response.ok) {
-          setError("Failed to fetch leaderboard");
-          setLoading(false);
-          return;
-        }
-        const data = await response.json();
-        const sortedData = data.sort(
-          (a: LeaderboardEntry, b: LeaderboardEntry) => a.time - b.time,
-        );
-        setLeaderboardData(sortedData);
+        const data = await leaderboardService.fetchLeaderboard();
+        setLeaderboardData(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Unknown error");
       } finally {
