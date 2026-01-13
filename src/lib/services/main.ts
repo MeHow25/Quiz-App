@@ -1,13 +1,19 @@
 import { ApiService } from "./api.service";
 import { FakeApiService } from "./fake.api.service";
+import { IApiService } from "@/lib/services/types";
 
 const apiServiceProvider = {
+  service: null as IApiService | null,
   getApiService() {
-    console.log("API Service Provider: Using Fake API =", process.env.NEXT_PUBLIC_USE_FAKE_API === "true");
-    if (process.env.NEXT_PUBLIC_USE_FAKE_API === "true") {
-      return new FakeApiService();
+    if (this.service) {
+      return this.service;
     }
-    return new ApiService();
+    if (process.env.NEXT_PUBLIC_USE_FAKE_API === "true") {
+      this.service = new FakeApiService();
+      return this.service;
+    }
+    this.service = new ApiService();
+    return this.service;
   },
 };
 
