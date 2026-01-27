@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import leaderboardService from "@/lib/services/leaderboard.service";
-import type { RootState, AppDispatch } from "./store";
+import type { RootState, AppDispatch } from "@/lib/redux/store";
 
 export interface GameState {
   currentQuestionIndex: number;

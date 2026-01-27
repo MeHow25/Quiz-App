@@ -1,4 +1,4 @@
-import { decodeHTML } from "../lib/utils";
+import { decodeHTML } from "@/lib/utils";
 import type { Question } from "@/lib/services/types";
 import { Answer } from "@/components/answer";
 

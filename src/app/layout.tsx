@@ -1,6 +1,6 @@
-import { Providers } from "./providers";
+import { Providers } from "@/app/providers";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./globals.css";
+import "@/app/globals.css";
 import type { Metadata } from "next";
 import { Col, Container, Row } from "react-bootstrap";
 

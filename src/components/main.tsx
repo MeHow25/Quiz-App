@@ -16,11 +16,11 @@ import {
   selectQuestionsStatus,
 } from "@/lib/redux/questions-slice";
 import { resetCounter, start } from "@/lib/redux/game-slice";
-import { DifficultyInput } from "./difficulty-input";
-import { AnswerTypeInput } from "./answer-type-input";
-import { Game } from "./game";
-import { ErrorToast } from "./error-toast";
-import Leaderboard from "./leaderboard";
+import { DifficultyInput } from "@/components/difficulty-input";
+import { AnswerTypeInput } from "@/components/answer-type-input";
+import { Game } from "@/components/game";
+import { ErrorToast } from "@/components/error-toast";
+import Leaderboard from "@/components/leaderboard";
 import type { AppDispatch } from "@/lib/redux/store";
 
 type Difficulty = "easy" | "medium" | "hard" | null;

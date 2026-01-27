@@ -1,4 +1,4 @@
-import { LeaderboardEntry } from "./types";
+import { LeaderboardEntry } from "@/lib/services/types";
 
 const leaderboardService = {
   async fetchLeaderboard(): Promise<LeaderboardEntry[]> {

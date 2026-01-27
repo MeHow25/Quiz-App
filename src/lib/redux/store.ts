@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import categoriesReducer from "./categories-slice";
-import questionsReducer from "./questions-slice";
-import gameReducer from "./game-slice";
+import categoriesReducer from "@/lib/redux/categories-slice";
+import questionsReducer from "@/lib/redux/questions-slice";
+import gameReducer from "@/lib/redux/game-slice";
 
 export const store = configureStore({
   reducer: {

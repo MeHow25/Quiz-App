@@ -17,10 +17,10 @@ import {
   showSummary,
 } from "@/lib/redux/game-slice";
 import { selectQuestionsValue } from "@/lib/redux/questions-slice";
-import { Progress } from "./progress";
-import { CurrentQuestion } from "./current-question";
-import { Summary } from "./summary";
-import { Stopwatch } from "./stopwatch";
+import { Progress } from "@/components/progress";
+import { CurrentQuestion } from "@/components/current-question";
+import { Summary } from "@/components/summary";
+import { Stopwatch } from "@/components/stopwatch";
 import type { AppDispatch, RootState } from "@/lib/redux/store";
 
 interface GameProps {

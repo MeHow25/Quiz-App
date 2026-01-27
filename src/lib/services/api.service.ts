@@ -5,7 +5,7 @@ import type {
   QuestionsResponse,
   IApiService,
   AnswerOption,
-} from "./types";
+} from "@/lib/services/types";
 
 function sortAnswers(answers: AnswerOption[]): AnswerOption[] {
   return answers.sort((a, b) => a.value.localeCompare(b.value));

@@ -1,5 +1,5 @@
-import { ApiService } from "./api.service";
-import { FakeApiService } from "./fake.api.service";
+import { ApiService } from "@/lib/services/api.service";
+import { FakeApiService } from "@/lib/services/fake.api.service";
 import { IApiService } from "@/lib/services/types";
 
 const apiServiceProvider = {

@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import apiServiceProvider from "@/lib/services/main";
 import type { Category } from "@/lib/services/types";
-import type { RootState } from "./store";
+import type { RootState } from "@/lib/redux/store";
 
 interface CategoriesState {
   value: Category[] | null;
