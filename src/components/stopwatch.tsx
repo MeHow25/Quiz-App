@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { selectStopStopwatch, selectStartedAt } from "@/lib/redux/game-slice";
+import {
+  useGameStore,
+  selectStopStopwatch,
+  selectStartedAt,
+} from "@/lib/store/game-store";
 
 export function Stopwatch() {
-  const start = useSelector(selectStartedAt);
-  const stopStopwatch = useSelector(selectStopStopwatch);
+  const start = useGameStore(selectStartedAt);
+  const stopStopwatch = useGameStore(selectStopStopwatch);
   const [now, setNow] = useState(start);
   const [startTimer, setStartTimer] = useState(true);
 

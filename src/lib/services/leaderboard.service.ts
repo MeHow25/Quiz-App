@@ -8,6 +8,10 @@ const leaderboardService = {
     }
     const data = await response.json();
 
+    if (!Array.isArray(data)) {
+      return [];
+    }
+
     return data.sort(
       (a: LeaderboardEntry, b: LeaderboardEntry) => a.time - b.time,
     );

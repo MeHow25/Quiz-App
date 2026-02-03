@@ -1,27 +1,17 @@
 "use client";
 
 import { Button, Col, Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { useGameStore } from "@/lib/store/game-store";
 import {
-  correctAnswer,
-  goNextQuestion,
-  incorrectAnswer,
-  selectGame,
-  start,
-  startAgain,
-  showTimer,
-  hideSummary,
-  saveRecord,
-  showSummary,
-} from "@/lib/redux/game-slice";
-import { selectQuestionsValue } from "@/lib/redux/questions-slice";
+  useQuestionsStore,
+  selectQuestionsValue,
+} from "@/lib/store/questions-store";
 import { Progress } from "@/components/progress";
 import { CurrentQuestion } from "@/components/current-question";
 import { Summary } from "@/components/summary";
 import { Stopwatch } from "@/components/stopwatch";
-import type { AppDispatch, RootState } from "@/lib/redux/store";
 
 interface GameProps {
   exitGame: () => void;
@@ -31,17 +21,28 @@ export function Game({ exitGame }: GameProps) {
   const { data: session } = useSession();
   const nickname = session?.user?.name || "Guest";
 
-  const questions = useSelector(selectQuestionsValue);
-  const restartCount = useSelector(
-    (state: RootState) => state.game.restartCount,
-  );
-  const game = useSelector(selectGame);
-  const dispatch = useDispatch<AppDispatch>();
+  const questions = useQuestionsStore(selectQuestionsValue);
+
+  const game = useGameStore((state) => state);
+  const restartCount = useGameStore((state) => state.restartCount);
+  const wonGame = useGameStore((state) => state.wonGame);
+  const recordSaved = useGameStore((state) => state.recordSaved);
+
+  const startAction = useGameStore((state) => state.start);
+  const startAgainAction = useGameStore((state) => state.startAgain);
+  const showTimerAction = useGameStore((state) => state.showTimerAction);
+  const correctAnswerAction = useGameStore((state) => state.correctAnswer);
+  const incorrectAnswerAction = useGameStore((state) => state.incorrectAnswer);
+  const showSummaryAction = useGameStore((state) => state.showSummaryAction);
+  const goNextQuestionAction = useGameStore((state) => state.goNextQuestion);
+  const hideSummaryAction = useGameStore((state) => state.hideSummary);
+  const saveRecordAction = useGameStore((state) => state.saveRecord);
+
   useEffect(() => {
-    if (game.wonGame && !game.recordSaved) {
-      dispatch(saveRecord(nickname));
+    if (wonGame && !recordSaved) {
+      saveRecordAction(nickname);
     }
-  }, [game.wonGame, game.recordSaved, dispatch, nickname]);
+  }, [wonGame, recordSaved, saveRecordAction, nickname]);
 
   if (!questions) {
     return null;
@@ -50,25 +51,25 @@ export function Game({ exitGame }: GameProps) {
   const currentQuestion = questions[game.currentQuestionIndex];
 
   function startGameAgain() {
-    dispatch(startAgain());
-    dispatch(start());
-    dispatch(showTimer());
+    startAgainAction();
+    startAction();
+    showTimerAction();
   }
 
   function handleCorrectAnswer() {
-    dispatch(correctAnswer());
+    correctAnswerAction();
   }
 
   function handleIncorrectAnswer() {
-    dispatch(incorrectAnswer());
+    incorrectAnswerAction();
   }
 
   function showSummaryModal() {
-    dispatch(showSummary());
+    showSummaryAction();
   }
 
   function goToNextQuestion() {
-    dispatch(goNextQuestion());
+    goNextQuestionAction();
   }
 
   return (
@@ -135,7 +136,7 @@ export function Game({ exitGame }: GameProps) {
       <Summary
         data-testid="summary"
         show={game.showSummary}
-        onHide={() => dispatch(hideSummary())}
+        onHide={() => hideSummaryAction()}
       />
     </>
   );

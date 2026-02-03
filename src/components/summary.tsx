@@ -8,8 +8,11 @@ import {
   TwitterShareButton,
   XIcon,
 } from "react-share";
-import { useSelector } from "react-redux";
-import { selectFinishedAt, selectStartedAt } from "@/lib/redux/game-slice";
+import {
+  useGameStore,
+  selectFinishedAt,
+  selectStartedAt,
+} from "@/lib/store/game-store";
 import { formatDuration } from "@/lib/utils";
 import leaderboardService from "@/lib/services/leaderboard.service";
 
@@ -19,8 +22,8 @@ interface SummaryProps {
 }
 
 export function Summary(props: SummaryProps) {
-  const finishedAt = useSelector(selectFinishedAt);
-  const startedAt = useSelector(selectStartedAt);
+  const finishedAt = useGameStore(selectFinishedAt);
+  const startedAt = useGameStore(selectStartedAt);
   const time = formatDuration(finishedAt - startedAt);
   const playerTime = finishedAt - startedAt;
 

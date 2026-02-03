@@ -2,37 +2,40 @@
 
 import { useEffect, useState } from "react";
 import { Button, Col, Form, Spinner, Container } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchAsync,
+  useCategoriesStore,
   selectCategoriesValue,
-} from "@/lib/redux/categories-slice";
+} from "@/lib/store/categories-store";
 import {
-  fetchQuestionsAsync,
-  resetQuestions,
+  useQuestionsStore,
   selectQuestionsValue,
   selectQuestionsLoading,
   selectNoResults,
   selectQuestionsStatus,
-} from "@/lib/redux/questions-slice";
-import { resetCounter, start } from "@/lib/redux/game-slice";
+} from "@/lib/store/questions-store";
+import { useGameStore } from "@/lib/store/game-store";
 import { DifficultyInput } from "@/components/difficulty-input";
 import { AnswerTypeInput } from "@/components/answer-type-input";
 import { Game } from "@/components/game";
 import { ErrorToast } from "@/components/error-toast";
 import Leaderboard from "@/components/leaderboard";
-import type { AppDispatch } from "@/lib/redux/store";
 
 type Difficulty = "easy" | "medium" | "hard" | null;
 type AnswerMode = "enabled" | "disabled";
 
 export default function Main() {
-  const categories = useSelector(selectCategoriesValue);
-  const questionsValue = useSelector(selectQuestionsValue);
-  const questionsLoading = useSelector(selectQuestionsLoading);
-  const questionsStatus = useSelector(selectQuestionsStatus);
-  const noResults = useSelector(selectNoResults);
-  const dispatch = useDispatch<AppDispatch>();
+  const categories = useCategoriesStore(selectCategoriesValue);
+  const fetchCategories = useCategoriesStore((state) => state.fetchCategories);
+
+  const questionsValue = useQuestionsStore(selectQuestionsValue);
+  const questionsLoading = useQuestionsStore(selectQuestionsLoading);
+  const questionsStatus = useQuestionsStore(selectQuestionsStatus);
+  const noResults = useQuestionsStore(selectNoResults);
+  const fetchQuestions = useQuestionsStore((state) => state.fetchQuestions);
+  const resetQuestions = useQuestionsStore((state) => state.resetQuestions);
+
+  const start = useGameStore((state) => state.start);
+  const resetCounter = useGameStore((state) => state.resetCounter);
 
   const [showNoResultsToast, setShowNoResultsToast] = useState<boolean>(false);
   const gameStarted = questionsValue && questionsValue.length > 0;
@@ -42,7 +45,7 @@ export default function Main() {
   const [trueFalseMode, setTrueFalseMode] = useState<AnswerMode>("disabled");
 
   useEffect(() => {
-    dispatch(fetchAsync());
+    fetchCategories();
     // eslint-disable-next-line
   }, []);
 
@@ -53,21 +56,20 @@ export default function Main() {
   function setDifficulty(level: Difficulty) {
     setSelectedDifficulty(level);
   }
-  function startGame() {
-    dispatch(resetCounter());
-    dispatch(
-      fetchQuestionsAsync({
-        categoryId: selectedCategory,
-        difficulty: selectedDifficulty,
-        trueFalse: trueFalseMode,
-      }),
-    ).then(() => {
-      dispatch(start());
+
+  async function startGame() {
+    resetCounter();
+    await fetchQuestions({
+      categoryId: selectedCategory,
+      difficulty: selectedDifficulty,
+      trueFalse: trueFalseMode,
     });
+    start();
   }
+
   function exitGame() {
-    dispatch(resetQuestions());
-    dispatch(start());
+    resetQuestions();
+    start();
   }
 
   return (

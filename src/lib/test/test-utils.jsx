@@ -1,21 +1,61 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { setupStore } from "@/lib/redux/store";
+import { useGameStore } from "@/lib/store/game-store";
+import { useQuestionsStore } from "@/lib/store/questions-store";
+import { useCategoriesStore } from "@/lib/store/categories-store";
 
-export function renderWithProviders(ui, extendedRenderOptions = {}) {
+// Helper to reset all Zustand stores before each test
+export function resetStores() {
+  useGameStore.setState({
+    currentQuestionIndex: 0,
+    wonGame: false,
+    answerClicked: false,
+    stopStopwatch: false,
+    showTimer: true,
+    restartCount: 0,
+    showSummary: false,
+    startedAt: 0,
+    finishedAt: 0,
+    recordSaved: false,
+    showNextQuestionButton: false,
+    showPlayAgainButton: false,
+  });
+
+  useQuestionsStore.setState({
+    value: null,
+    status: "idle",
+    noResults: false,
+  });
+
+  useCategoriesStore.setState({
+    value: null,
+    status: "idle",
+  });
+}
+
+export function renderWithProviders(ui, options = {}) {
   const {
-    preloadedState = {},
-    store = setupStore(preloadedState),
+    initialGameState,
+    initialQuestionsState,
+    initialCategoriesState,
     ...renderOptions
-  } = extendedRenderOptions;
+  } = options;
 
-  function Wrapper({ children }) {
-    return <Provider store={store}>{children}</Provider>;
+  // Reset stores before setting initial state
+  resetStores();
+
+  // Set initial state if provided
+  if (initialGameState) {
+    useGameStore.setState(initialGameState);
+  }
+  if (initialQuestionsState) {
+    useQuestionsStore.setState(initialQuestionsState);
+  }
+  if (initialCategoriesState) {
+    useCategoriesStore.setState(initialCategoriesState);
   }
 
   return {
-    store,
-    ...render(ui, { wrapper: Wrapper, ...renderOptions }),
+    ...render(ui, renderOptions),
   };
 }
