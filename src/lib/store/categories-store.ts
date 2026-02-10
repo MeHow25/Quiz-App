@@ -28,13 +28,6 @@ export const useCategoriesStore = create<CategoriesState & CategoriesActions>(
   }),
 );
 
-// Selectors
 export const selectCategoriesValue = (
   state: CategoriesState & CategoriesActions,
 ) => state.value;
-export const selectCategoriesStatus = (
-  state: CategoriesState & CategoriesActions,
-) => state.status;
-export const selectCategoriesLoading = (
-  state: CategoriesState & CategoriesActions,
-) => state.status === "loading";

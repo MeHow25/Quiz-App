@@ -131,8 +131,6 @@ export const useGameStore = create<GameState & GameActions>((set, get) => ({
   },
 }));
 
-// Selectors
-export const selectGame = (state: GameState & GameActions) => state;
 export const selectFinishedAt = (state: GameState & GameActions) =>
   state.finishedAt;
 export const selectStartedAt = (state: GameState & GameActions) =>

@@ -45,7 +45,7 @@ export default function Main() {
   const [trueFalseMode, setTrueFalseMode] = useState<AnswerMode>("disabled");
 
   useEffect(() => {
-    fetchCategories();
+    void fetchCategories();
     // eslint-disable-next-line
   }, []);
 

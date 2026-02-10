@@ -1,4 +1,3 @@
-import React from "react";
 import { render } from "@testing-library/react";
 import { useGameStore } from "@/lib/store/game-store";
 import { useQuestionsStore } from "@/lib/store/questions-store";

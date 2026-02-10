@@ -24,7 +24,7 @@ export default function Leaderboard() {
       }
     };
 
-    fetchLeaderboard();
+    void fetchLeaderboard();
   }, []);
 
   const showMore = () => {

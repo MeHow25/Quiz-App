@@ -46,7 +46,7 @@ export function Summary(props: SummaryProps) {
       }
     };
 
-    fetchLeaderboard();
+    void fetchLeaderboard();
   }, [playerTime]);
 
   return (

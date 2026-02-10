@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "@/app/globals.css";
 import type { Metadata } from "next";
 import { Col, Container, Row } from "react-bootstrap";
+import React from "react";
 
 export const metadata: Metadata = {
   title: "Quiz App Redux",
