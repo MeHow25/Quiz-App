@@ -1,0 +1,40 @@
+import { Button } from "react-bootstrap";
+import { decodeHTML } from "@/lib/utils";
+
+interface AnswerData {
+  value: string;
+  is_correct: boolean;
+}
+
+interface AnswerProps {
+  answer: AnswerData;
+  clicked: boolean;
+  handleCorrectAnswer: () => void;
+  handleIncorrectAnswer: () => void;
+}
+
+export function Answer({
+  answer,
+  clicked,
+  handleCorrectAnswer,
+  handleIncorrectAnswer,
+}: AnswerProps) {
+  const onClick = answer.is_correct
+    ? handleCorrectAnswer
+    : handleIncorrectAnswer;
+  const backgroundColorIfClicked = answer.is_correct ? "success" : "danger";
+
+  return (
+    <li key={answer.value} className="list-group-item p-0">
+      <Button
+        size="lg"
+        onClick={!clicked ? onClick : undefined}
+        className="rounded-0 w-100 p-3"
+        variant={clicked ? backgroundColorIfClicked : "light"}
+        active={clicked}
+      >
+        {decodeHTML(answer.value)}
+      </Button>
+    </li>
+  );
+}

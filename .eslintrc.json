@@ -1,11 +1,13 @@
 {
   "extends": ["next", "airbnb", "prettier", "eslint:recommended"],
-  "plugins": ["react", "react-hooks", "prettier"],
+  "plugins": ["react", "react-hooks", "prettier", "import"],
   "env": {
     "browser": true,
     "jest": true
   },
   "rules": {
+    "import/no-relative-parent-imports": "error",
+    "import/no-self-import": "error",
     "react/prop-types": "off",
     "import/no-unresolved": "off",
     "import/prefer-default-export": "off",
@@ -20,6 +22,7 @@
     "react/destructuring-assignment": "off",
     "consistent-return": "off",
     "no-console": "off",
-    "no-return-await": "off"
+    "no-return-await": "off",
+    "class-methods-use-this": "off"
   }
 }
